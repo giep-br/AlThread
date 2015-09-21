@@ -1,0 +1,10 @@
+<?php
+require_once("Sensor/Exceptions.php");
+require_once("Sensor/LoadSensorInterface.php");
+require_once("Sensor/AbstractLoadSensor.php");
+require_once("Sensor/LoadAVG.php");
+require_once("Measurer/Exceptions.php");
+require_once("Measurer/LoadMeasurerInterface.php");
+require_once("Measurer/AbstractLoadMeasurer.php");
+require_once("Measurer/FirstDegree.php");
+require_once("LoadControlMapper.php");
