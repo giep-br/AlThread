@@ -47,12 +47,12 @@ class ConfigControlTest extends \Codeception\TestCase\Test
         $config_control = new ConfigControl($file);
         $this->assertEquals(20, $config_control->threads);
 
-        $config_control->update();
+        $config_control->checkForFileChange();
 
         $this->assertEquals(20, $config_control->threads);
 
         $st_loader = $this->stubLoaderUpdate();
-        $config_control->update();
+        $config_control->checkForFileChange();
 
         $this->assertEquals(40, $config_control->threads);
         $this->assertEquals(60, $config_control->connections);

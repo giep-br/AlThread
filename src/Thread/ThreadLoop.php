@@ -3,6 +3,8 @@ namespace AlThread\Thread;
 
 use \AlThread\LoadControl\Sensor\AbstractLoadSensor;
 use \AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
+use \AlThread\Thread\Context;
+use \AlThread\Config\ConfigControl;
 
 class ThreadLoop
 {
@@ -16,12 +18,16 @@ class ThreadLoop
         $worker_class,
         AbstractLoadMeasurer $measurer,
         WorkerPool $pool,
-        ResourceControl $resource
+        ResourceControl $resource,
+        ConfigControl $config,
+        Context $context
     ) {
         $this->worker_class = $worker_class;
         $this->measurer = $measurer;
         $this->pool = $pool;
         $this->resource = $resource;
+        $this->config = $config;
+        $this->context = $context;
         $this->debuger = false;
     }
 
@@ -51,8 +57,11 @@ class ThreadLoop
             if (!$this->pool->isFull() && $this->resource->valid()) {
                 $item = $this->resource->next();
                 $k = $this->resource->key();
-                $this->pool->submit(new $this->worker_class($k, $item));
+                $this->pool->submit(new $this->worker_class($k, $item, $this->context));
             }
+
+            $this->config->checkForFileChange();
+
             $this->pool->setMax($this->measurer->measure());
             $this->pool->collectGarbage();
         }

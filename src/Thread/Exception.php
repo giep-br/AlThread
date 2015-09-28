@@ -13,3 +13,8 @@ class ThreadException extends \Exception
 class ResourceException extends \Exception
 {
 }
+
+
+class ContextException extends \Exception
+{
+}

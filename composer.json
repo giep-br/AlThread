@@ -1,6 +1,13 @@
 {
-    "name": "AlThread",
-    "require": {
+    "name": "Allin/AlThread",
+    "description": "A simple framework for make multithreading tasks.",
+    "authors": [
+        {
+            "name": "Georgio Barbosa",
+            "email": "georgio.barbosa@gmail.com"
+        }
+    ],
+    "require-dev": {
         "goaop/framework": "^0.6.1",
         "codeception/aspect-mock": "^0.5.3"
     }
