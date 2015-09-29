@@ -94,39 +94,35 @@ class Job implements \SplObserver
 
     public function setup()
     {
-        try {
-            $this->worker_class = $this->config->worker_class;
-            $this->loadWorkerClass($this->worker_class);
+        $this->worker_class = $this->config->worker_class;
+        $this->loadWorkerClass($this->worker_class);
 
-            $sensor_type = $this->config->sensor_type;
-            $measurer_type = $this->config->measurer_type;
-            $max_threads = $this->config->max_threads;
+        $sensor_type = $this->config->sensor_type;
+        $measurer_type = $this->config->measurer_type;
+        $max_threads = $this->config->max_threads;
 
-            if (!$max_threads) {
-                $max_threads = 10;
-            }
-
-            if (!$sensor_type) {
-                $sensor_type = "load_avg";
-            }
-
-            if (!$measurer_type) {
-                $measurer_type = "first_degree";
-            }
-
-            $this->sensor = LoadControlMapper::makeSensor($sensor_type);
-            $this->measurer = LoadControlMapper::makeMeasurer($measurer_type, $max_threads);
-            $this->measurer->setSensor($this->sensor);
-
-            $this->pool = new WorkerPool($this->measurer->measure());
-            $worker_class = $this->worker_class;
-            $resources = $worker_class::setUpResource();
-            $this->resource_controll = new ResourceControl($resources);
-            $this->createThreadLoop();
-        } catch (\Exception $e) {
-            echo $e;
-            die("\nexiting");
+        if (!$max_threads) {
+            $max_threads = 10;
         }
+
+        if (!$sensor_type) {
+            $sensor_type = "load_avg";
+        }
+
+        if (!$measurer_type) {
+            $measurer_type = "first_degree";
+        }
+
+        $this->sensor = LoadControlMapper::makeSensor($sensor_type);
+        $this->measurer = LoadControlMapper::makeMeasurer($measurer_type, $max_threads);
+        $this->measurer->setSensor($this->sensor);
+
+        $this->pool = new WorkerPool($this->measurer->measure());
+        $worker_class = $this->worker_class;
+        $resources = $worker_class::setUpResource();
+        $this->resource_controll = new ResourceControl($resources);
+        $this->createThreadLoop();
+
         $this->is_setup = true;
     }
 
