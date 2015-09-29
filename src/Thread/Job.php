@@ -50,7 +50,7 @@ class Job implements \SplObserver
 
         if (!is_file($file)) {
             throw new Exception\ThreadException(
-                "Worker file not exists"
+                "Worker file not exists: ".$file
             );
         }
 
