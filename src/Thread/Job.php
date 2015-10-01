@@ -119,7 +119,7 @@ class Job implements \SplObserver
 
         $this->pool = new WorkerPool($this->measurer->measure());
         $worker_class = $this->worker_class;
-        $resources = $worker_class::setUpResource();
+        $resources = $worker_class::setUpResource($this->returnContext());
         $this->resource_controll = new ResourceControl($resources);
         $this->createThreadLoop();
 
