@@ -32,8 +32,8 @@ class ResourceControl implements \Iterator, \Countable
             throw new ResourceException("Resource pointer out of range");
         }
 
-        $this->p++;
         $out = $this->current();
+        $this->p++;
         return $out;
     }
 
@@ -47,8 +47,7 @@ class ResourceControl implements \Iterator, \Countable
         return count($this->load);
     }
 
-    public function valid()
-    {
-        return !($this->p >= $this->count()-1);
+    public function valid(){
+        return !($this->p >= $this->count());
     }
 }

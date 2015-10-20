@@ -37,7 +37,8 @@ class LoadAVG extends AbstractLoadSensor
     {
         rewind($this->file_handler);
         $out = fread($this->file_handler, 30);
-        return $out;
+	return "2";
+        //return $out;
     }
 
     private function updateData()
