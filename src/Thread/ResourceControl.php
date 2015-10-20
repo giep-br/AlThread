@@ -47,7 +47,8 @@ class ResourceControl implements \Iterator, \Countable
         return count($this->load);
     }
 
-    public function valid(){
+    public function valid()
+    {
         return !($this->p >= $this->count());
     }
 }
