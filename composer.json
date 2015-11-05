@@ -1,5 +1,5 @@
 {
-    "name": "Allin/AlThread",
+    "name": "giep-br/AlThread",
     "description": "A simple framework for make multithreading tasks.",
     "type": "library",
     "authors": [
