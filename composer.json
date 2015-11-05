@@ -1,5 +1,5 @@
 {
-    "name": "giep-br/AlThread",
+    "name": "giep-br/althread",
     "description": "A simple framework for make multithreading tasks.",
     "type": "library",
     "authors": [
