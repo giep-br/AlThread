@@ -1,7 +1,6 @@
 {
     "name": "Allin/AlThread",
     "description": "A simple framework for make multithreading tasks.",
-    "version": "1.0-alpha",
     "type": "library",
     "authors": [
         {
