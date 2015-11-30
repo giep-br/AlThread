@@ -66,5 +66,8 @@ class ThreadLoop
             $this->pool->collectGarbage();
         }
         $this->pool->join();
+        
+        $worker_class = $this->worker_class;
+        $worker_class::onFinishLoop($this->context);
     }
 }

@@ -5,4 +5,5 @@ interface WorkerInterface
 {
     public function run();
     public static function setUpResource(Context $context);
+    public static function onFinishLoop(Context $context);
 }
