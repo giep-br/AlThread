@@ -9,10 +9,6 @@ class LoadAVG extends AbstractLoadSensor
     private $file_handler;
     private $keys;
     private $one;
-    private $five;
-    private $ten;
-    private $prosses_running;
-    private $last_prosses;
     private $core_numbers;
 
     public function __construct($file = "/proc/loadavg")
@@ -36,9 +32,7 @@ class LoadAVG extends AbstractLoadSensor
     private function readFile()
     {
         rewind($this->file_handler);
-        $out = fread($this->file_handler, 30);
-	return "2";
-        //return $out;
+        return fread($this->file_handler, 30);
     }
 
     private function updateData()
