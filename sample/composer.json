@@ -1,0 +1,22 @@
+{
+    "name": "giep-br/fact-multt-sample",
+    "type": "software",
+    "description": "a simple multithread factorial calculator",
+    "authors": [
+        {
+            "name": "Georgio barbosa da Fonseca",
+            "email": "georgio.barbosa@gmail.com"
+        }
+    ],
+    "repositories": [
+          {
+              "type": "vcs",
+              "url": "https://github.com/giep-br/AlThread.git"
+          }
+    ],
+    "require": {
+        "php": ">=5.0.0",
+        "giep-br/althread": ">=1.1"
+    }
+
+}

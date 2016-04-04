@@ -1,0 +1,53 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "2f50d8353704baefb5707bca23c4476b",
+    "content-hash": "f79ec855a8a23a93874955353ae8a1ec",
+    "packages": [
+        {
+            "name": "giep-br/althread",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:giep-br/AlThread.git",
+                "reference": "5e2f504171ea1b971adbcd3640e3f822b23f0e35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/giep-br/AlThread/zipball/5e2f504171ea1b971adbcd3640e3f822b23f0e35",
+                "reference": "5e2f504171ea1b971adbcd3640e3f822b23f0e35",
+                "shasum": ""
+            },
+            "require-dev": {
+                "codeception/aspect-mock": "^0.5.3",
+                "goaop/framework": "^0.6.1"
+            },
+            "type": "library",
+            "authors": [
+                {
+                    "name": "Georgio Barbosa",
+                    "email": "georgio.barbosa@gmail.com"
+                }
+            ],
+            "description": "A simple framework for make multithreading tasks.",
+            "support": {
+                "source": "https://github.com/giep-br/AlThread/tree/1.1",
+                "issues": "https://github.com/giep-br/AlThread/issues"
+            },
+            "time": "2015-11-30 16:58:41"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.0.0"
+    },
+    "platform-dev": []
+}
