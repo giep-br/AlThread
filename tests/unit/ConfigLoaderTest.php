@@ -2,10 +2,11 @@
 namespace ConfigTest;
 
 use AlThread\Config\ConfigLoader;
-use AlThread\Config\Exception\ConfigException;
+use AlThread\Exception\ConfigException;
+use Codeception\TestCase\Test;
 use Codeception\Util\Stub;
 
-class ConfigLoaderTest extends \Codeception\TestCase\Test
+class ConfigLoaderTest extends Test
 {
     /**
     * @var \UnitTester
@@ -36,7 +37,6 @@ class ConfigLoaderTest extends \Codeception\TestCase\Test
             )
         );
 
-        $wrong_json_except;
         try {
             ConfigLoader::loadConfig($invalid_json);
             $wrong_json_except = false;

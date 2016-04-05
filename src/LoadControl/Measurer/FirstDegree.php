@@ -1,7 +1,7 @@
 <?php
+
 namespace AlThread\LoadControl\Measurer;
 
-use AlThread\LoadControl\Measurer\Exception;
 use AlThread\LoadControl\Sensor;
 
 class FirstDegree extends AbstractLoadMeasurer
@@ -12,7 +12,7 @@ class FirstDegree extends AbstractLoadMeasurer
     public function __construct($root = 10)
     {
         parent::__construct($root);
-        $this->a = $this->foundAngular($this->root);
+        $this->a = $this->foundAngular();
     }
 
     private function foundAngular()

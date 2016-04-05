@@ -1,7 +1,7 @@
 <?php
 namespace AlThread\Thread;
 
-use \AlThread\Thread\Exception\PoolException;
+use \AlThread\Exception\PoolException;
 
 /**
 *  The Pool is a context for running threads

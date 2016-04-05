@@ -1,4 +1,5 @@
 <?php
+
 namespace AlThread\LoadControl\Sensor;
 
 abstract class AbstractLoadSensor implements LoadSensorInterface

@@ -2,8 +2,8 @@
 namespace LoadMeasurerTest;
 
 use AlThread;
-use AlThread\LoadControl\Sensor\Exception\SensorException;
-use \Codeception\Util\Stub;
+use AlThread\Exception\SensorException;
+use AlThread\LoadControl\Sensor\LoadAVG;
 
 class LoadAVGTest extends \Codeception\TestCase\Test
 {
@@ -14,7 +14,7 @@ class LoadAVGTest extends \Codeception\TestCase\Test
 
     protected function _before()
     {
-        $this->loadavg = new AlThread\LoadControl\Sensor\LoadAVG();
+        $this->loadavg = new LoadAVG();
     }
 
     protected function _after()
@@ -25,7 +25,7 @@ class LoadAVGTest extends \Codeception\TestCase\Test
     {
         #Test if a wrong file parameter raise an exception
         try {
-            new AlThread\LoadControl\Sensor\LoadAVG("/shutup");
+            new LoadAVG("/shutup");
             $wrong_file = false;
         } catch (SensorException $e) {
             $wrong_file = true;

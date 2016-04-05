@@ -1,7 +1,7 @@
 <?php
 namespace AlThread\LoadControl\Sensor;
 
-use AlThread\LoadControl\Sensor\Exception;
+use AlThread\Exception\SensorException;
 
 class LoadAVG extends AbstractLoadSensor
 {
@@ -20,7 +20,7 @@ class LoadAVG extends AbstractLoadSensor
         $this->load_file = $file;
 
         if (!is_file($this->load_file)) {
-            throw new Exception\SensorException("Wrong file parameter");
+            throw new SensorException("Wrong file parameter");
         }
 
         $this->file_handler = fopen($this->load_file, 'r');
@@ -37,7 +37,7 @@ class LoadAVG extends AbstractLoadSensor
     {
         rewind($this->file_handler);
         $out = fread($this->file_handler, 30);
-	return "2";
+	    return "2";
         //return $out;
     }
 

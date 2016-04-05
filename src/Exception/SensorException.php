@@ -1,5 +1,5 @@
 <?php
-namespace AlThread\LoadControl\Sensor\Exception;
+namespace AlThread\Exception;
 
 class SensorException extends \Exception
 {

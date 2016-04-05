@@ -1,9 +1,9 @@
 <?php
 namespace AlThread\Config;
 
-use AlThread\Config\Exception\ConfigException;
+use AlThread\Exception\ConfigException;
 
-    class ConfigControl implements \SplSubject
+class ConfigControl implements \SplSubject
 {
     private $config_vars;
     private $file;
@@ -36,9 +36,6 @@ use AlThread\Config\Exception\ConfigException;
         $new_m_time = $this->file->getMtime();
 
         if ($new_m_time > $this->m_time) {
-
-            echo "  \n\n\n\n   ##### CHANGED CARAIIIII ##### \n\n\n";
-
             $this->inflateVars();
             $this->m_time = $new_m_time;
             $this->notify();

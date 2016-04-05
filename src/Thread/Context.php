@@ -1,7 +1,7 @@
 <?php
 namespace AlThread\Thread;
 
-use AlThread\Thread\Exception\ContextException;
+use AlThread\Exception\ContextException;
 
 class Context
 {

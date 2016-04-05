@@ -15,8 +15,7 @@
           }
     ],
     "require": {
-        "php": ">=5.0.0",
-        "giep-br/althread": ">=1.1"
+        "php": ">=5.4.0",
+        "giep-br/althread": "dev-master@dev"
     }
-
 }

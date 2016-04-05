@@ -1,7 +1,7 @@
 <?php
 namespace AlThread\Config;
 
-use AlThread\Config\Exception\ConfigException;
+use AlThread\Exception\ConfigException;
 
 class ConfigLoader
 {

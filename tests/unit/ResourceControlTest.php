@@ -1,9 +1,11 @@
 <?php
 namespace ThreadTest;
 
+use AlThread\Exception\ResourceException;
 use \AlThread\Thread\ResourceControl;
+use Codeception\TestCase\Test;
 
-class ResourceControlTest extends \Codeception\TestCase\Test
+class ResourceControlTest extends Test
 {
     /**
     * @var \UnitTester
@@ -13,10 +15,6 @@ class ResourceControlTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->load = array(1, 2, 3, 4, 5);
-    }
-
-    protected function _after()
-    {
     }
 
     public function testCurrent()
@@ -54,7 +52,7 @@ class ResourceControlTest extends \Codeception\TestCase\Test
                 $resource->next();
             }
             $out_of_range = false;
-        } catch (\AlThread\Thread\Exception\ResourceException $e) {
+        } catch (ResourceException $e) {
             $out_of_range = true;
         }
         $this->assertTrue($out_of_range);
@@ -79,6 +77,9 @@ class ResourceControlTest extends \Codeception\TestCase\Test
     public function testValid()
     {
         $resource = new ResourceControl($this->load);
+
+        $this->assertEquals(1, $resource->next());
+        $this->assertTrue($resource->valid());
 
         $this->assertEquals(2, $resource->next());
         $this->assertTrue($resource->valid());

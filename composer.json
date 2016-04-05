@@ -8,9 +8,18 @@
             "email": "georgio.barbosa@gmail.com"
         }
     ],
+    "require": {
+        "php": ">5.4",
+        "ext-pthreads": "*"
+    },
     "require-dev": {
         "goaop/framework": "^0.6.1",
-        "codeception/aspect-mock": "^0.5.3",
-        "ext-pthreads": "*"
+        "codeception/codeception": "*",
+        "codeception/aspect-mock": "^0.5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "AlThread\\": "src/"
+        }
     }
 }

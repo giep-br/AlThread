@@ -1,27 +1,31 @@
 <?php
 namespace ThreadTest;
 
+use AlThread\Exception\PoolException;
+use AlThread\Thread\Context;
 use AlThread\Thread\WorkerPool;
 use AlThread\Thread\AbstractWorker;
-use AspectMock\Test as test;
+use Codeception\TestCase\Test;
 use Codeception\Util\Stub;
-
-require("../../src/Thread/WorkerInterface.php");
-require("../../src/Thread/AbstractWorker.php");
 
 class ConcretWorker extends AbstractWorker
 {
-    public static function setUpResource()
+    public static function onFinishLoop(Context $context){
+        return null;
+    }
+
+    public static function setUpResource(Context $context)
     {
         return null;
     }
 
     protected function exec()
     {
+
     }
 }
 
-class WorkerPoolTest extends \Codeception\TestCase\Test
+class WorkerPoolTest extends Test
 {
     /**
     * @var \UnitTester
@@ -63,11 +67,10 @@ class WorkerPoolTest extends \Codeception\TestCase\Test
         $pool->submit($this->stubConcreteWorker());
         $this->assertEquals(2, $pool->getSize());
 
-        $max_threads_reach;
         try {
             $pool->submit($this->stubConcreteWorker());
             $max_threads_reach = false;
-        } catch (\AlThread\Thread\Exception\PoolException $e) {
+        } catch (PoolException $e) {
             $max_threads_reach = true;
         }
         $this->assertTrue($max_threads_reach);
@@ -101,8 +104,8 @@ class WorkerPoolTest extends \Codeception\TestCase\Test
     private function stubIsRunningWorker()
     {
         return  Stub::construct(
-            "ThreadTest\ConcretWorker",
-            array(),
+            "ThreadTest\\ConcretWorker",
+            array(null, null, new Context()),
             array(
                 "start" => function () {},
                 "isRunning" => Stub::consecutive(false),
@@ -113,8 +116,8 @@ class WorkerPoolTest extends \Codeception\TestCase\Test
     private function stubConcreteWorker()
     {
         return  Stub::construct(
-            "ThreadTest\ConcretWorker",
-            array(),
+            "ThreadTest\\ConcretWorker",
+            array(null, null, new Context()),
             array(
                 "start" => function () {}
             )
@@ -126,7 +129,7 @@ class WorkerPoolTest extends \Codeception\TestCase\Test
         $stubs = [];
         for ($i = 0; $i < 10; $i++) {
             $stubs[] = Stub::make(
-                "AlThread\Thread\AbstractWorker",
+                "AlThread\\Thread\\AbstractWorker",
                 array(
                     "start" => function () {},
                     "exec" => function () {}

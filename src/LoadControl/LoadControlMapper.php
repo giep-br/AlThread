@@ -14,7 +14,7 @@ class LoadControlMapper
     public static function makeMeasurer($id, $max_threads)
     {
         if (!array_key_exists($id, self::$measurers)) {
-            throw new \RunTimeException(
+            throw new \RuntimeException(
                 "Invlalid Measurer class in config file"
             );
         }
@@ -25,7 +25,7 @@ class LoadControlMapper
     public static function makeSensor($id)
     {
         if (!array_key_exists($id, self::$sensors)) {
-            throw new \RunTimeException(
+            throw new \RuntimeException(
                 "Invlalid Sensor class in config file"
             );
         }
