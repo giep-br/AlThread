@@ -2,6 +2,7 @@
 namespace AlThread\Thread;
 
 use AlThread\Config\ConfigControl;
+use AlThread\Exception\ThreadException;
 use AlThread\LoadControl\LoadControlMapper;
 
 class Job implements \SplObserver
@@ -20,7 +21,7 @@ class Job implements \SplObserver
     public function __construct($config_file, $workers_folder)
     {
         if (!is_dir($workers_folder)) {
-            throw new Exception\ThreadException(
+            throw new ThreadException(
                 "Invalid worker folder: ".$workers_folder
             );
         }
@@ -36,7 +37,7 @@ class Job implements \SplObserver
     public function startJob()
     {
         if (!$this->is_setup) {
-            throw new Exception\ThreadException(
+            throw new ThreadException(
                 "Job not configured, call the method Job::setup()"
             );
         }
@@ -49,7 +50,7 @@ class Job implements \SplObserver
         $file = $this->workers_folder.'/workers/'.$class.".php";
 
         if (!is_file($file)) {
-            throw new Exception\ThreadException(
+            throw new ThreadException(
                 "Worker file not exists: ".$file
             );
         }
@@ -57,13 +58,13 @@ class Job implements \SplObserver
         require_once($file);
 
         if (!class_exists($class)) {
-            throw new Exception\ThreadException(
+            throw new ThreadException(
                 "Worker class is not defined: \"".$$class."\""
             );
         }
     }
 
-    public function update(SplSubject $subject)
+    public function update(\SplSubject $subject)
     {
         $this->config = $subject;
     }

@@ -1,13 +1,13 @@
 <?php
 
-include("./vendor/giep-br/althread/src/include.php");
+include("../vendor/autoload.php");
 
 use AlThread\Thread\Job;
 use AlThread\Thread\Context;
 
 $j = new Job(
-    "./jobs/conf/job_fact.json",
-    "./jobs/"
+    __DIR__ . "/jobs/conf/job_fact.json",
+    __DIR__ . "/jobs/"
 );
 
 $c = new Context();

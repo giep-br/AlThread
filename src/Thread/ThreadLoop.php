@@ -1,9 +1,7 @@
 <?php
 namespace AlThread\Thread;
 
-use \AlThread\LoadControl\Sensor\AbstractLoadSensor;
 use \AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
-use \AlThread\Thread\Context;
 use \AlThread\Config\ConfigControl;
 
 class ThreadLoop
@@ -33,7 +31,7 @@ class ThreadLoop
 
     private function output($text)
     {
-        $date = new DateTime();
+        $date = new \DateTime();
         $out = "[";
         $out .= $date->format("d:m:Y H:i:s")."] - ";
         unset($date);

@@ -1,7 +1,7 @@
 <?php
 namespace AlThread\Thread;
 
-use \AlThread\Thread\Exception\ResourceException;
+use \AlThread\Exception\ResourceException;
 
 /**
 *   The ResourceControll is a resource supplier for the Threads

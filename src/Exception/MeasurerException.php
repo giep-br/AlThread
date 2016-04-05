@@ -1,6 +1,7 @@
 <?php
-namespace AlThread\LoadControl\Measurer\Exception;
+namespace AlThread\Exception;
 
 class MeasurerException extends \Exception
 {
+
 }

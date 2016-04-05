@@ -1,5 +1,6 @@
 <?php
-namespace AlThread\Config\Exception;
+
+namespace AlThread\Exception;
 
 class ConfigException extends \Exception
 {

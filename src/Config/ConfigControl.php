@@ -1,9 +1,9 @@
 <?php
 namespace AlThread\Config;
 
-use AlThread\Config\Exception\ConfigException;
+use AlThread\Exception\ConfigException;
 
-    class ConfigControl implements \SplSubject
+class ConfigControl implements \SplSubject
 {
     private $config_vars;
     private $file;

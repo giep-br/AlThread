@@ -1,6 +1,8 @@
 <?php
+
 namespace AlThread\LoadControl\Measurer;
 
+use AlThread\Exception\MeasurerException;
 use AlThread\LoadControl\Sensor;
 
 abstract class AbstractLoadMeasurer implements LoadMeasurerInterface
@@ -28,13 +30,13 @@ abstract class AbstractLoadMeasurer implements LoadMeasurerInterface
     final public function measure()
     {
         if (!$this->sensor) {
-            throw new Exception\MeasurerException("No sensor defined");
+            throw new MeasurerException("No sensor defined");
         }
 
         $y = $this->sensor->getSystemLoad();
 
         if ($y < 0 or !is_numeric($y)) {
-            throw new Exception\MeasurerException("Invalid Sensor value");
+            throw new MeasurerException("Invalid Sensor value");
         }
 
         if ($y > 1) {
