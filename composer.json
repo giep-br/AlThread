@@ -10,7 +10,8 @@
     ],
     "require-dev": {
         "goaop/framework": "^0.6.1",
-        "codeception/aspect-mock": "^0.5.3"
+        "codeception/aspect-mock": "^0.5.3",
+        "ext-pthreads": "*"
     },
     "autoload": {
         "psr-4": {
