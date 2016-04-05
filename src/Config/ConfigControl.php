@@ -36,9 +36,6 @@ class ConfigControl implements \SplSubject
         $new_m_time = $this->file->getMtime();
 
         if ($new_m_time > $this->m_time) {
-
-            echo "  \n\n\n\n   ##### CHANGED CARAIIIII ##### \n\n\n";
-
             $this->inflateVars();
             $this->m_time = $new_m_time;
             $this->notify();

@@ -2,12 +2,12 @@
 namespace MeasurerTest;
 
 use AlThread;
-use AlThread\LoadControl\Measurer\Exception\MeasurerException;
-use \Codeception\Util\Stub;
-use \Codeception\Util\Debug;
-use AspectMock\Test as test;
+use AlThread\Exception\MeasurerException;
+use AlThread\LoadControl\Measurer\FirstDegree;
+use Codeception\TestCase\Test;
+use Codeception\Util\Stub;
 
-class FirstDegreeTest extends \Codeception\TestCase\Test
+class FirstDegreeTest extends Test
 {
     /**
      * @var \UnitTester
@@ -17,7 +17,7 @@ class FirstDegreeTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->max_threads = 30;
-        $this->firstDegree = new AlThread\LoadControl\Measurer\FirstDegree($this->max_threads);
+        $this->firstDegree = new FirstDegree($this->max_threads);
     }
 
     protected function _after()
@@ -30,14 +30,14 @@ class FirstDegreeTest extends \Codeception\TestCase\Test
         try {
             $this->firstDegree->measure();
             $no_sensor = false;
-        } catch (AlThread\LoadControl\Measurer\Exception\MeasurerException $e) {
+        } catch (MeasurerException $e) {
             $no_sensor = true;
         }
 
         $this->assertTrue($no_sensor);
 
         $mockSensor = Stub::constructEmpty(
-            'AlThread\LoadControl\Sensor\LoadAvg',
+            '\AlThread\LoadControl\Sensor\LoadAVG',
             array("file" => "/proc/loadavg"),
             array('getSystemLoad' => Stub::consecutive(0, 1, 1.1, -1, null))
         );
@@ -73,7 +73,7 @@ class FirstDegreeTest extends \Codeception\TestCase\Test
     public function testSetSensor()
     {
         #Testing if it throw a Exception when it's without a sensor
-        $firstDegree = new AlThread\LoadControl\Measurer\FirstDegree($this->max_threads);
+        $firstDegree = new FirstDegree($this->max_threads);
 
         try {
             $firstDegree->measure();
