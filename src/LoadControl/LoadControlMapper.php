@@ -4,11 +4,11 @@ namespace AlThread\LoadControl;
 class LoadControlMapper
 {
     public static $measurers = [
-            "first_degree" => "\AlThread\LoadControl\Measurer\FirstDegree"
+        "first_degree" => "\\AlThread\\LoadControl\\Measurer\\FirstDegree"
     ];
 
     public static $sensors = [
-            "load_avg" => "\AlThread\LoadControl\Sensor\LoadAVG"
+        "load_avg" => "\\AlThread\\LoadControl\\Sensor\\LoadAVG"
     ];
 
     public static function makeMeasurer($id, $max_threads)
