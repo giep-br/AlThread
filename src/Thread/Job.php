@@ -45,9 +45,11 @@ class Job implements \SplObserver
         $this->thread_loop->mainLoop();
     }
 
-    protected function loadWorkerClass($class)
+    protected function loadWorkerClass($fqcn)
     {
-        $file = $this->workers_folder.'/workers/'.$class.".php";
+        $className = explode('\\', $fqcn);
+        $file = $this->workers_folder . '/src/Workers/'
+            . $className[count($className) - 1].".php";
 
         if (!is_file($file)) {
             throw new ThreadException(
@@ -57,9 +59,9 @@ class Job implements \SplObserver
 
         require_once($file);
 
-        if (!class_exists($class)) {
+        if (!class_exists($fqcn)) {
             throw new ThreadException(
-                "Worker class is not defined: \"".$$class."\""
+                "Worker class is not defined: \"".$$fqcn."\""
             );
         }
     }

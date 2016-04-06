@@ -18,6 +18,8 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
 
     final public function run()
     {
+        $this->bootstrap();
+
         $this->exec($this->context);
     }
 
@@ -25,4 +27,27 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
     *  Method to be rewrited in the child class
     */
     abstract protected function exec();
+
+    private function bootstrap()
+    {
+        chdir(__DIR__);
+        $previousDir = '.';
+
+        while (!file_exists('vendor/autoload.php')) {
+            $dir = dirname(getcwd());
+
+            if ($previousDir === $dir) {
+                throw new \RuntimeException(
+                    'Unable to locate "vendor/autoload.php": ' .
+                    'Please run composer install'
+                );
+            }
+
+            $previousDir = $dir;
+            chdir($dir);
+        }
+
+        /** @noinspection PhpIncludeInspection */
+        require 'vendor/autoload.php';
+    }
 }
