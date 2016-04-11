@@ -60,6 +60,7 @@ class WorkerFact extends AbstractWorker
 		return $out;
 	}
 }
+
 ```
 ### Worker
 - jobs/conf/job_fact.json

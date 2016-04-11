@@ -61,7 +61,7 @@ class Job implements \SplObserver
 
         if (!class_exists($fqcn)) {
             throw new ThreadException(
-                "Worker class is not defined: \"".$$fqcn."\""
+                "Worker class is not defined: \"".$fqcn."\""
             );
         }
     }
