@@ -7,7 +7,7 @@ namespace AlThread\Thread;
 */
 abstract class AbstractWorker extends \Thread implements WorkerInterface
 {
-    private $context;
+    protected $context;
 
     final public function __construct($k, $line, Context $context)
     {
