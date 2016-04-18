@@ -30,24 +30,21 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
 
     private function bootstrap()
     {
-        chdir(__DIR__);
-        $previousDir = '.';
-
-        while (!file_exists('vendor/autoload.php')) {
-            $dir = dirname(getcwd());
-
-            if ($previousDir === $dir) {
-                throw new \RuntimeException(
-                    'Unable to locate "vendor/autoload.php": ' .
-                    'Please run composer install'
-                );
-            }
-
-            $previousDir = $dir;
-            chdir($dir);
-        }
-
         /** @noinspection PhpIncludeInspection */
-        require 'vendor/autoload.php';
+        require $this->findParentPath('vendor') . '/autoload.php';
+    }
+
+    private function findParentPath($path)
+    {
+        $dir = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+        return $dir . '/' . $path;
     }
 }
