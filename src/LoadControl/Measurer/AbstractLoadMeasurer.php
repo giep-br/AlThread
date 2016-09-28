@@ -8,18 +8,24 @@ use AlThread\LoadControl\Sensor;
 abstract class AbstractLoadMeasurer implements LoadMeasurerInterface
 {
     protected $root;
+    protected $min;
     private $sensor;
     const B = 1;
 
-    public function __construct($root, $sensor = null)
+    public function __construct($root, $min = null)
     {
         $this->root = $root;
-        $this->sensor = $sensor;
+        $this->min = $min;
     }
 
     final public function setRoot($root)
     {
         $this->root = $root;
+    }
+
+    final public function setMin($min)
+    {
+        $this->min = $min;
     }
 
     final public function setSensor(Sensor\AbstractLoadSensor $sensor)
@@ -39,11 +45,13 @@ abstract class AbstractLoadMeasurer implements LoadMeasurerInterface
             throw new MeasurerException("Invalid Sensor value");
         }
 
-        if ($y > 1) {
-            return 0;
+        $threads_to_run = (int)$this->calculate($y);
+
+        if ($this->min and $threads_to_run < $this->min) {
+            return $this->min;
         }
 
-        return (int)$this->calculate($y);
+        return  $threads_to_run;
     }
 
     abstract protected function calculate($y);

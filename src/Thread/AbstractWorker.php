@@ -19,7 +19,6 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
     final public function run()
     {
         $this->bootstrap();
-
         $this->exec($this->context);
     }
 

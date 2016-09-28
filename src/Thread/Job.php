@@ -103,9 +103,14 @@ class Job implements \SplObserver
         $sensor_type = $this->config->sensor_type;
         $measurer_type = $this->config->measurer_type;
         $max_threads = $this->config->max_threads;
+        $min_threads = $this->config->min_threads;
 
         if (!$max_threads) {
             $max_threads = 10;
+        }
+
+        if (!$min_threads) {
+            $min_threads = 0;
         }
 
         if (!$sensor_type) {
@@ -117,7 +122,7 @@ class Job implements \SplObserver
         }
 
         $this->sensor = LoadControlMapper::makeSensor($sensor_type);
-        $this->measurer = LoadControlMapper::makeMeasurer($measurer_type, $max_threads);
+        $this->measurer = LoadControlMapper::makeMeasurer($measurer_type, $max_threads, $min_threads);
         $this->measurer->setSensor($this->sensor);
 
         $this->pool = new WorkerPool($this->measurer->measure());

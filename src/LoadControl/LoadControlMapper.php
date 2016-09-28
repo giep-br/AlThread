@@ -11,7 +11,7 @@ class LoadControlMapper
         "load_avg" => "\\AlThread\\LoadControl\\Sensor\\LoadAVG"
     ];
 
-    public static function makeMeasurer($id, $max_threads)
+    public static function makeMeasurer($id, $max_threads, $min_threads)
     {
         if (!array_key_exists($id, self::$measurers)) {
             throw new \RuntimeException(
@@ -19,7 +19,7 @@ class LoadControlMapper
             );
         }
 
-        return new self::$measurers[$id]($max_threads);
+        return new self::$measurers[$id]($max_threads, $min_threads);
     }
 
     public static function makeSensor($id)

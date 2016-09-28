@@ -9,9 +9,9 @@ class FirstDegree extends AbstractLoadMeasurer
 
     private $a;
 
-    public function __construct($root = 10)
+    public function __construct($root = 10, $min)
     {
-        parent::__construct($root);
+        parent::__construct( $root, $min);
         $this->a = $this->foundAngular();
     }
 

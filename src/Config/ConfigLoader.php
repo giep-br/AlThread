@@ -13,7 +13,6 @@ class ConfigLoader
 
         $json = ConfigLoader::readFile($file);
         $obj = ConfigLoader::parseJson($json);
-
         if ($obj === null) {
             throw new ConfigException(
                 "Parse error in json config file ".$file->getPathname()
