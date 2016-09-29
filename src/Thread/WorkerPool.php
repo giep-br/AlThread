@@ -72,6 +72,17 @@ class WorkerPool
         return $this->terminated;
     }
 
+    public function getRunning()
+    {
+        $total = 0;
+        foreach ($this->pool as $k => $t) {
+            if ($t->isRunning()) {
+                $total++;
+            }
+        }
+        return $total;
+    }
+
     public function collectGarbage()
     {
         foreach ($this->pool as $k => $t) {
