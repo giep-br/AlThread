@@ -8,7 +8,7 @@ class JobDebug
         \SplFileObject $file,
         \AlThread\Thread\WorkerPool $pool,
         \AlThread\Thread\Job $job,
-        \AlThread\LoadControl\Meassurer\LoadMeasurerInterface $meassurer,
+        \AlThread\LoadControl\Meassurer\FirstDegree $meassurer,
         \AlThread\Config\ConfigControl $conf,
         $id = ""
     ) {
