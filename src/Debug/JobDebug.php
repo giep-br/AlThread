@@ -6,10 +6,10 @@ class JobDebug
 {
     public function __construct(
         \SplFileObject $file,
-        AlThread\Thread\WorkerPool $pool,
-        AlThread\Thread\Job $job,
-        AlThread\LoadControl\Meassurer\LoadMeasurerInterface $meassurer,
-        AlThread\Config\ConfigControl $conf,
+        \AlThread\Thread\WorkerPool $pool,
+        \AlThread\Thread\Job $job,
+        \AlThread\LoadControl\Meassurer\LoadMeasurerInterface $meassurer,
+        \AlThread\Config\ConfigControl $conf,
         $id = ""
     ) {
         if(!$file->isWritable()) {
