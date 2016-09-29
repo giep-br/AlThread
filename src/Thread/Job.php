@@ -4,7 +4,7 @@ namespace AlThread\Thread;
 use AlThread\Config\ConfigControl;
 use AlThread\Exception\ThreadException;
 use AlThread\LoadControl\LoadControlMapper;
-use AlTrhead\Debug\JobDebug;
+use AlThread\Debug\JobDebug;
 
 class Job implements \SplObserver
 {

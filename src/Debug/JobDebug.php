@@ -15,7 +15,6 @@ class JobDebug
         if(!$file->isWritable()) {
             throw new IOError("Debug File ".$file->getPathname()." is not a valid file."    );
         }
-
         $this->file = $file;
         $this->pool = $pool;
         $this->meassurer = $meassurer;
