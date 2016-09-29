@@ -37,7 +37,7 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
         require $this->findParentPath('vendor') . '/autoload.php';
     }
 
-    private function getLT()
+    public function getLT()
     {
         if(!$this->lt) {
             return null;
