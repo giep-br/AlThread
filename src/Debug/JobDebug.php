@@ -66,13 +66,13 @@ class JobDebug
 
     private function getData()
     {
-        $out = "Job Id: " $this->getID();
-        $out .= " Tds Running: " $this->getRunning();
-        $out .= " Sugested: " $this->getSugested();
-        $out .= " Terminated: " $this->getTerminated();
-        $out .= " ALT: " $this->getALT();
-        $out .= " Tds Max: " $this->getMax();
-        $out .= " Tds Min: " $this->getMin();
+        $out = "Job Id: ". $this->getID();
+        $out .= " Tds Running: ". $this->getRunning();
+        $out .= " Sugested: " .$this->getSugested();
+        $out .= " Terminated: ". $this->getTerminated();
+        $out .= " ALT: ". $this->getALT();
+        $out .= " Tds Max: ". $this->getMax();
+        $out .= " Tds Min: ". $this->getMin();
         $out .= "\n";
         return $out;
     }
@@ -81,7 +81,7 @@ class JobDebug
     {
         $data = $thisw->getData();
         $this->file->rewind();
-        $this->file->ftruncate(0)
+        $this->file->ftruncate(0);
         return $this->file->fwrite($data, 300);
     }
 

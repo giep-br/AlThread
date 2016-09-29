@@ -76,7 +76,7 @@ class WorkerPool
     {
         foreach ($this->pool as $k => $t) {
             if (!$t->isRunning()) {
-                $this->terminated++
+                $this->terminated++;
                 $this->ALT[$t->getLT()];
                 unset($this->pool[$k]);
             }
