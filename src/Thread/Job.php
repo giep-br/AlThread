@@ -169,7 +169,7 @@ class Job implements \SplObserver
 
     private function createJobDebug()
     {
-            $file = new \SplFileObject("/tmp/".$this->job_id);
+            $file = new \SplFileObject("/tmp/".$this->job_id, "w");
             $jd = new JobDebug(
                 $file,
                 $this->pool,
