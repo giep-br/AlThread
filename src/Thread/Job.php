@@ -141,7 +141,7 @@ class Job implements \SplObserver
         }
 
         if (!$this->min_threads) {
-            $this->min_threads = 0;this->
+            $this->min_threads = 0;
         }
 
         if (!$sensor_type) {
