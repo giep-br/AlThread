@@ -120,7 +120,7 @@ class Job implements \SplObserver
     public function generateJobId()
     {
         if ($this->config->job_id) {
-            return $this->config->job_id
+            return $this->config->job_id;
         }
 
         return md5( (string)time().(string)rand(0, 2000) );
@@ -165,7 +165,7 @@ class Job implements \SplObserver
         $this->createThreadLoop();
 
         $this->is_setup = true;
-    } 
+    }
 
     private function createJobDebug()
     {
