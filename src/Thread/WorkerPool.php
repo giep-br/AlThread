@@ -18,7 +18,7 @@ class WorkerPool
         $this->max = $max;
         $this->pool = array();
         $this->terminated = 0;
-        $this->ALT = 0;
+        $this->ALT = array();
     }
 
     public function getSize()
@@ -88,7 +88,7 @@ class WorkerPool
         foreach ($this->pool as $k => $t) {
             if (!$t->isRunning()) {
                 $this->terminated++;
-                $this->ALT[$t->getLT()];
+                $this->ALT[] = $t->getLT();
                 unset($this->pool[$k]);
             }
         }
