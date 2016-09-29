@@ -1,5 +1,5 @@
 <?php
-namespace AlTrhead\Debug;
+namespace AlThread\Debug;
 
 
 class JobDebug
