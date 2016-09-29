@@ -4,6 +4,7 @@ namespace AlThread\Thread;
 use AlThread\Config\ConfigControl;
 use AlThread\Exception\ThreadException;
 use AlThread\LoadControl\LoadControlMapper;
+use AlTrhead\Debug\JobDebug;
 
 class Job implements \SplObserver
 {
@@ -164,6 +165,19 @@ class Job implements \SplObserver
         $this->createThreadLoop();
 
         $this->is_setup = true;
+    } 
+
+    private function createJobDebug()
+    {
+            $file = new \SplFileObject("/tmp/".$this->job_id);
+            $jd = new JobDebug(
+                $file,
+                $this->pool,
+                $this,
+                $this->measurer,
+                $this->config
+            );
+            return $jd;
     }
 
     private function createThreadLoop()
@@ -174,7 +188,8 @@ class Job implements \SplObserver
             $this->pool,
             $this->resource_controll,
             $this->config,
-            $this->returnContext()
+            $this->returnContext(),
+            $this->createJobDebug()
         );
     }
 }
