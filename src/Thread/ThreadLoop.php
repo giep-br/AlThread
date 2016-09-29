@@ -3,6 +3,7 @@ namespace AlThread\Thread;
 
 use \AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
 use \AlThread\Config\ConfigControl;
+use \AlThread\Debug\JobDebug;
 
 class ThreadLoop
 {
@@ -11,6 +12,7 @@ class ThreadLoop
     private $pool;
     private $resource;
     private $debuger;
+    private $job_debug;
 
     public function __construct(
         $worker_class,
@@ -18,7 +20,8 @@ class ThreadLoop
         WorkerPool $pool,
         ResourceControl $resource,
         ConfigControl $config,
-        Context $context
+        Context $context,
+        JobDebug $debug
     ) {
         $this->worker_class = $worker_class;
         $this->measurer = $measurer;
@@ -27,6 +30,7 @@ class ThreadLoop
         $this->config = $config;
         $this->context = $context;
         $this->debuger = false;
+        $this->job_debug = $debug;
     }
 
     private function output($text)
@@ -59,12 +63,12 @@ class ThreadLoop
             }
 
             $this->config->checkForFileChange();
-
             $this->pool->setMax($this->measurer->measure());
             $this->pool->collectGarbage();
+            $this->job_debug->update();
         }
         $this->pool->join();
-        
+
         $worker_class = $this->worker_class;
         $worker_class::onFinishLoop($this->context);
     }

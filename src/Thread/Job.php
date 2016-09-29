@@ -17,6 +17,11 @@ class Job implements \SplObserver
     private $pool;
     private $resource_controll;
     private $context;
+    private $job_id;
+    private $max_threads;
+    private $min_threads;
+    private $start_time;
+
 
     public function __construct($config_file, $workers_folder)
     {
@@ -32,6 +37,7 @@ class Job implements \SplObserver
         $this->config = new ConfigControl($file);
         $this->context = null;
         $this->is_setup = false;
+        $this->start_time = time();
     }
 
     public function startJob()
@@ -73,12 +79,12 @@ class Job implements \SplObserver
 
     private function updateConfig()
     {
-        $max_threads = $this->config->max_threads;
-        if (!$max_threads) {
-            $max_threads = 10;
+        $this->max_threads = $this->config->max_threads;
+        if (!$this->max_threads) {
+            $this->max_threads = 10;
         }
 
-        $this->measurer->setRoot($max_threads);
+        $this->measurer->setRoot($this->max_threads);
     }
 
     private function returnContext()
@@ -95,6 +101,30 @@ class Job implements \SplObserver
         $this->context = $context;
     }
 
+    public function getJobId()
+    {
+        return $this->job_id;
+    }
+
+    public function setJobId($id)
+    {
+        $this->job_id = $id;
+    }
+
+    public function getStartTime()
+    {
+        return $this->start_time;
+    }
+
+    public function generateJobId()
+    {
+        if ($this->config->job_id) {
+            return $this->config->job_id
+        }
+
+        return md5( (string)time().(string)rand(0, 2000) );
+    }
+
     public function setup()
     {
         $this->worker_class = $this->config->worker_class;
@@ -102,15 +132,15 @@ class Job implements \SplObserver
 
         $sensor_type = $this->config->sensor_type;
         $measurer_type = $this->config->measurer_type;
-        $max_threads = $this->config->max_threads;
-        $min_threads = $this->config->min_threads;
+        $this->max_threads = $this->config->max_threads;
+        $this->min_threads = $this->config->min_threads;
 
-        if (!$max_threads) {
-            $max_threads = 10;
+        if (!$this->max_threads) {
+            $this->max_threads = 10;
         }
 
-        if (!$min_threads) {
-            $min_threads = 0;
+        if (!$this->min_threads) {
+            $this->min_threads = 0;this->
         }
 
         if (!$sensor_type) {
@@ -121,8 +151,10 @@ class Job implements \SplObserver
             $measurer_type = "first_degree";
         }
 
+        $this->job_id = (bool)$this->job_id ? $this->job_id : $this->generateJobId();
+
         $this->sensor = LoadControlMapper::makeSensor($sensor_type);
-        $this->measurer = LoadControlMapper::makeMeasurer($measurer_type, $max_threads, $min_threads);
+        $this->measurer = LoadControlMapper::makeMeasurer($measurer_type, $this->max_threads, $this->min_threads);
         $this->measurer->setSensor($this->sensor);
 
         $this->pool = new WorkerPool($this->measurer->measure());

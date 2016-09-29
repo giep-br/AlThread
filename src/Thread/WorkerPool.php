@@ -10,11 +10,15 @@ class WorkerPool
 {
     private $pool;
     private $max;
+    private $terminated;
+    private $ALT;
 
     public function __construct($max)
     {
         $this->max = $max;
         $this->pool = array();
+        $this->terminated = 0;
+        $this->ALT = 0;
     }
 
     public function getSize()
@@ -32,6 +36,22 @@ class WorkerPool
         return $this->max;
     }
 
+    public function getALT()
+    {
+        $tot = count($this->ALT);
+
+        if (!$tot) {
+            return 0;
+        }
+
+        $sum = array_reduce($this->ALT, function($carry, $item){
+            $carry += $item;
+            return $carry;
+        });
+
+        return $sum / $tot;
+    }
+
     public function submit(AbstractWorker $wk)
     {
         if (!$this->isFull()) {
@@ -47,10 +67,17 @@ class WorkerPool
         return $this->getSize() >= $this->max;
     }
 
+    public function getTerminated()
+    {
+        return $this->terminated;
+    }
+
     public function collectGarbage()
     {
         foreach ($this->pool as $k => $t) {
             if (!$t->isRunning()) {
+                $this->terminated++
+                $this->ALT[$t->getLT()];
                 unset($this->pool[$k]);
             }
         }

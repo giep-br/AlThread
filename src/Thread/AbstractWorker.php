@@ -8,18 +8,22 @@ namespace AlThread\Thread;
 abstract class AbstractWorker extends \Thread implements WorkerInterface
 {
     protected $context;
+    private $lt;
 
     final public function __construct($k, $line, Context $context)
     {
         $this->context = $context;
         $this->k = $k;
         $this->line = $line;
+        $this->lt = null;
     }
 
     final public function run()
     {
         $this->bootstrap();
+        $start_time = microtime();
         $this->exec($this->context);
+        $this->lt = microtime() - $start_time;
     }
 
     /**
@@ -31,6 +35,15 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
     {
         /** @noinspection PhpIncludeInspection */
         require $this->findParentPath('vendor') . '/autoload.php';
+    }
+
+    private function getLT()
+    {
+        if(!$this->lt) {
+            return null;
+        }
+
+        return $this->lt;
     }
 
     private function findParentPath($path)
