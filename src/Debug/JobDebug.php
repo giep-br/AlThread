@@ -4,12 +4,20 @@ namespace AlThread\Debug;
 
 class JobDebug
 {
+    private
+        $file,
+        $pool,
+        $measurer,
+        $job,
+        $config,
+        $id;
+
     public function __construct(
         \SplFileObject $file,
         \AlThread\Thread\WorkerPool $pool,
         \AlThread\Thread\Job $job,
         \AlThread\LoadControl\Measurer\LoadMeasurerInterface $measurer,
-        \AlThread\Config\ConfigControl $conf,
+        \AlThread\Config\ConfigControl $config,
         $id = ""
     ) {
         if(!$file->isWritable()) {
@@ -66,12 +74,12 @@ class JobDebug
     private function getData()
     {
         $out = "Job Id: ". $this->getID();
-        $out .= " Tds Running: ". $this->getRunning();
-        $out .= " Sugested: " .$this->getSugested();
-        $out .= " Terminated: ". $this->getTerminated();
-        $out .= " ALT: ". $this->getALT();
-        $out .= " Tds Max: ". $this->getMax();
-        $out .= " Tds Min: ". $this->getMin();
+        $out .= " | Tds Running: ". $this->getRunning();
+        $out .= " | Sugested: " .$this->getSugested();
+        $out .= " | Terminated: ". $this->getTerminated();
+        $out .= " | ALT: ". $this->getALT();
+        $out .= " | Tds Max: ". $this->getMax();
+        $out .= " | Tds Min: ". $this->getMin();
         $out .= "\n";
         return $out;
     }

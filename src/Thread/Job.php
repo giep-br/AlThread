@@ -135,7 +135,7 @@ class Job implements \SplObserver
         $measurer_type = $this->config->measurer_type;
         $this->max_threads = $this->config->max_threads;
         $this->min_threads = $this->config->min_threads;
-
+    
         if (!$this->max_threads) {
             $this->max_threads = 10;
         }
