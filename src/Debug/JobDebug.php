@@ -8,7 +8,7 @@ class JobDebug
         \SplFileObject $file,
         \AlThread\Thread\WorkerPool $pool,
         \AlThread\Thread\Job $job,
-        \AlThread\LoadControl\Measurer\LoadMeasurerInterface $meassurer,
+        \AlThread\LoadControl\Measurer\LoadMeasurerInterface $measurer,
         \AlThread\Config\ConfigControl $conf,
         $id = ""
     ) {
@@ -17,7 +17,7 @@ class JobDebug
         }
         $this->file = $file;
         $this->pool = $pool;
-        $this->meassurer = $meassurer;
+        $this->measurer = $measurer;
         $this->job = $job;
         $this->config = $config;
         $this->id = $id;
@@ -30,7 +30,7 @@ class JobDebug
 
     public function getSugested()
     {
-        return $this->meassurer->meassure();
+        return $this->measurer->measure();
     }
 
     public function getTerminated()
