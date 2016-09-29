@@ -78,7 +78,7 @@ class JobDebug
 
     public function update()
     {
-        $data = $thisw->getData();
+        $data = $this->getData();
         $this->file->rewind();
         $this->file->ftruncate(0);
         return $this->file->fwrite($data, 300);
