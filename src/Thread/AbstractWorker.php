@@ -21,9 +21,9 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
     final public function run()
     {
         $this->bootstrap();
-        $start_time = microtime();
+        $start_time = microtime(true);
         $this->exec($this->context);
-        $this->lt = $start_time - microtime();
+        $this->lt = microtime(true) - $start_time;
     }
 
     /**

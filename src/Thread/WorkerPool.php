@@ -18,7 +18,7 @@ class WorkerPool
         $this->max = $max;
         $this->pool = array();
         $this->terminated = 0;
-        $this->ALT = array();
+        $this->ALT = 0();
     }
 
     public function getSize()
@@ -38,18 +38,11 @@ class WorkerPool
 
     public function getALT()
     {
-        $tot = count($this->ALT);
-
-        if (!$tot) {
+        if (!$this->terminated) {
             return 0;
         }
 
-        $sum = array_reduce($this->ALT, function($carry, $item){
-            $carry += $item;
-            return $carry;
-        });
-
-        return $sum / $tot;
+        return $this->ALT / $this->terminated;
     }
 
     public function submit(AbstractWorker $wk)
@@ -88,7 +81,7 @@ class WorkerPool
         foreach ($this->pool as $k => $t) {
             if (!$t->isRunning()) {
                 $this->terminated++;
-                $this->ALT[] = $t->getLT();
+                $this->ALT += $t->getLT();
                 unset($this->pool[$k]);
             }
         }
