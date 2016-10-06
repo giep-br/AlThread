@@ -57,6 +57,11 @@ class JobDebug
         return $this->pool->getALT();
     }
 
+    public function getLAVG()
+    {
+        return $this->sensor->getSystemLoad();
+    }
+
     public function getMax()
     {
         return $this->config->max_threads;
@@ -79,8 +84,8 @@ class JobDebug
         $out .= " \n| Tds Running: ". $this->getRunning();
         $out .= " | Sugested: " .$this->getSugested();
         $out .= " | Terminated: ". $this->getTerminated();
-        $out .= " | ALT: ". $this->getALT();
-        $out .= " | LAVG: ". $this->getALT();
+        $out .= " | ALT: ". $this->getALT()." s";
+        $out .= " | LAVG: ". $this->getLAVG();
         $out .= " \n| Tds Max: ". $this->getMax();
         $out .= " | Tds Min: ". $this->getMin();
         $out .= "\n";
