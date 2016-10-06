@@ -1,4 +1,5 @@
 <?php
+
 namespace AlThread\Debug;
 
 
@@ -6,6 +7,7 @@ class JobDebug
 {
     private
         $file,
+        $start_at,
         $pool,
         $measurer,
         $job,
@@ -17,15 +19,19 @@ class JobDebug
         \AlThread\Thread\WorkerPool $pool,
         \AlThread\Thread\Job $job,
         \AlThread\LoadControl\Measurer\LoadMeasurerInterface $measurer,
+        \AlThread\LoadControl\Sensor\LoadSensorInterface $sensor,
         \AlThread\Config\ConfigControl $config,
         $id = ""
     ) {
         if(!$file->isWritable()) {
-            throw new IOError("Debug File ".$file->getPathname()." is not a valid file."    );
+            throw new IOError("Debug File ".$file->getPathname()." is not a valid file.");
         }
+
         $this->file = $file;
+        $this->start_at = date("Y-m-d H:i:s");
         $this->pool = $pool;
         $this->measurer = $measurer;
+        $this->sensor = $sensor;
         $this->job = $job;
         $this->config = $config;
         $this->id = $id;
@@ -66,19 +72,16 @@ class JobDebug
         return $this->job->getJobId();
     }
 
-    public function getStartTime()
-    {
-        return $this->job->getStartTime();
-    }
-
     private function getData()
     {
         $out = "Job Id: ". $this->getID();
-        $out .= " | Tds Running: ". $this->getRunning();
+        $out .= " | Start At: ". $this->start_at;
+        $out .= " \n| Tds Running: ". $this->getRunning();
         $out .= " | Sugested: " .$this->getSugested();
         $out .= " | Terminated: ". $this->getTerminated();
         $out .= " | ALT: ". $this->getALT();
-        $out .= " | Tds Max: ". $this->getMax();
+        $out .= " | LAVG: ". $this->getALT();
+        $out .= " \n| Tds Max: ". $this->getMax();
         $out .= " | Tds Min: ". $this->getMin();
         $out .= "\n";
         return $out;

@@ -66,5 +66,25 @@ class ConfigControl implements \SplSubject
     private function inflateVars()
     {
         $this->config_vars = ConfigLoader::loadConfig($this->file);
+        $this->defaults();
+    }
+
+    private function defaults()
+    {
+        if (!$this->config_vars->max_threads) {
+            $this->config_vars->max_threads = 10;
+        }
+
+        if (!$this->config_vars->min_threads) {
+            $this->config_vars->min_threads = 5;
+        }
+
+        if (!$this->config_vars->sensor_type) {
+            $this->config_vars->sensor_type = "load_avg";
+        }
+
+        if (!$this->config_vars->measurer_type) {
+            $this->config_vars->measurer_type = "first_degree";
+        }
     }
 }

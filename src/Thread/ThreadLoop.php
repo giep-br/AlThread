@@ -71,5 +71,6 @@ class ThreadLoop
 
         $worker_class = $this->worker_class;
         $worker_class::onFinishLoop($this->context);
+        $this->job_debug->close();
     }
 }

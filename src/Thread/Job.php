@@ -112,11 +112,6 @@ class Job implements \SplObserver
         $this->job_id = $id;
     }
 
-    public function getStartTime()
-    {
-        return $this->start_time;
-    }
-
     public function generateJobId()
     {
         if ($this->config->job_id) {
@@ -131,30 +126,10 @@ class Job implements \SplObserver
         $this->worker_class = $this->config->worker_class;
         $this->loadWorkerClass($this->worker_class);
 
-        $sensor_type = $this->config->sensor_type;
-        $measurer_type = $this->config->measurer_type;
-
-        if (!$this->config->max_threads) {
-            $this->config->max_threads = 10;
-        }
-
-        if (!$this->config->min_threads) {
-            $this->config->min_threads = 5;
-        }
-
-        if (!$sensor_type) {
-            $sensor_type = "load_avg";
-        }
-
-        if (!$measurer_type) {
-            $measurer_type = "first_degree";
-        }
-
-        $this->config->min_threads = $this->min_threads;
         $this->job_id = (bool)$this->job_id ? $this->job_id : $this->generateJobId();
-        $this->sensor = LoadControlMapper::makeSensor($sensor_type);
+        $this->sensor = LoadControlMapper::makeSensor($this->config->sensor_type);
         $this->measurer = LoadControlMapper::makeMeasurer(
-                                                $measurer_type,
+                                                $this->config->measurer_type,
                                                 $this->config->max_threads,
                                                 $this->config->min_threads
                                             );
@@ -178,8 +153,14 @@ class Job implements \SplObserver
                 $this->pool,
                 $this,
                 $this->measurer,
+                $this->sensor,
                 $this->config
             );
+
+            pcntl_signal(SIGTERM, function($signo) use ($jd){
+                $jd->close();
+            });
+
             return $jd;
     }
 
@@ -195,4 +176,5 @@ class Job implements \SplObserver
             $this->createJobDebug()
         );
     }
+
 }
