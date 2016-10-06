@@ -81,12 +81,12 @@ class JobDebug
     {
         $out = "Job Id: ". $this->getID();
         $out .= " | Start At: ". $this->start_at;
-        $out .= " \n| Tds Running: ". $this->getRunning();
+        $out .= " \nTds Running: ". $this->getRunning();
         $out .= " | Sugested: " .$this->getSugested();
         $out .= " | Terminated: ". $this->getTerminated();
         $out .= " | ALT: ". $this->getALT()." s";
         $out .= " | LAVG: ". $this->getLAVG();
-        $out .= " \n| Tds Max: ". $this->getMax();
+        $out .= " \nTds Max: ". $this->getMax();
         $out .= " | Tds Min: ". $this->getMin();
         $out .= "\n";
         return $out;
