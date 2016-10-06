@@ -69,21 +69,31 @@ class ConfigControl implements \SplSubject
         $this->defaults();
     }
 
+    private function validString($param)
+    {
+            return isset($param) and is_string($param);
+    }
+
+    private function validNumeric($param)
+    {
+            return isset($param) and is_numeric($param);
+    }
+
     private function defaults()
     {
-        if (!$this->config_vars->max_threads) {
+        if (!isset($this->config_vars->max_threads)) {
             $this->config_vars->max_threads = 10;
         }
 
-        if (!$this->config_vars->min_threads) {
+        if (!isset($this->config_vars->min_threads)) {
             $this->config_vars->min_threads = 5;
         }
 
-        if (!$this->config_vars->sensor_type) {
+        if (!isset($this->config_vars->sensor_type)) {
             $this->config_vars->sensor_type = "load_avg";
         }
 
-        if (!$this->config_vars->measurer_type) {
+        if (!isset($this->config_vars->measurer_type)) {
             $this->config_vars->measurer_type = "first_degree";
         }
     }

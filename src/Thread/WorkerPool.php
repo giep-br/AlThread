@@ -18,7 +18,7 @@ class WorkerPool
         $this->max = $max;
         $this->pool = array();
         $this->terminated = 0;
-        $this->ALT = 0();
+        $this->ALT = 0;
     }
 
     public function getSize()
