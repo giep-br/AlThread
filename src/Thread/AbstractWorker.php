@@ -8,22 +8,22 @@ namespace AlThread\Thread;
 abstract class AbstractWorker extends \Thread implements WorkerInterface
 {
     protected $context;
-    private $lt;
+    private $lifeTime;
 
     final public function __construct($k, $line, Context $context)
     {
         $this->context = $context;
         $this->k = $k;
         $this->line = $line;
-        $this->lt = null;
+        $this->lifeTime = null;
     }
 
     final public function run()
     {
         $this->bootstrap();
-        $start_time = microtime();
+        $start_time = microtime("now");
         $this->exec($this->context);
-        $this->lt = $start_time - microtime();
+        $this->lifeTime = microtime("now") - $start_time;
     }
 
     /**
@@ -39,11 +39,11 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
 
     public function getLT()
     {
-        if(!$this->lt) {
+        if(!$this->lifeTime) {
             return null;
         }
 
-        return $this->lt;
+        return $this->lifeTime;
     }
 
     private function findParentPath($path)
