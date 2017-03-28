@@ -126,6 +126,11 @@ class Job implements \SplObserver
         return md5( (string)time().(string)rand(0, 2000) );
     }
 
+    public function getJobOutput()
+    {
+        return $this->pool->getThreadsOutput();
+    }
+
     public function setup()
     {
         $this->worker_class = $this->config->worker_class;

@@ -12,6 +12,7 @@ class WorkerPool
     private $max;
     private $terminated;
     private $ALT;
+    private $threads_output;
 
     public function __construct($max)
     {
@@ -19,6 +20,8 @@ class WorkerPool
         $this->pool = array();
         $this->terminated = 0;
         $this->ALT = array();
+        $this->threads_output = array();
+
     }
 
     public function getSize()
@@ -83,12 +86,18 @@ class WorkerPool
         return $total;
     }
 
+    public function getThreadsOutput()
+    {
+        return $this->threads_output;
+    }
+
     public function collectGarbage()
     {
         foreach ($this->pool as $k => $t) {
             if (!$t->isRunning()) {
                 $this->terminated++;
                 $this->ALT[] = $t->getLT();
+                $this->threads_output[] = $t->getOutput();
                 unset($this->pool[$k]);
             }
         }

@@ -1,6 +1,6 @@
 <?php
 
-include("../vendor/autoload.php");
+include("vendor/autoload.php");
 
 use AlThread\Thread\Job;
 use AlThread\Thread\Context;
@@ -16,3 +16,6 @@ $j->setContext($c);
 $j->setup();
 
 $j->startJob();
+$output = $j->getJobOutput();
+
+print_r($output);

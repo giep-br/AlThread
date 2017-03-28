@@ -9,6 +9,7 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
 {
     protected $context;
     private $lifeTime;
+    private $output;
 
     final public function __construct($k, $line, Context $context)
     {
@@ -20,9 +21,8 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
 
     final public function run()
     {
-        $this->bootstrap();
         $start_time = microtime("now");
-        $this->exec($this->context);
+        $this->output = $this->exec($this->context);
         $this->lifeTime = microtime("now") - $start_time;
     }
 
@@ -30,12 +30,6 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
     *  Method to be rewrited in the child class
     */
     abstract protected function exec();
-
-    private function bootstrap()
-    {
-        /** @noinspection PhpIncludeInspection */
-        require $this->findParentPath('vendor') . '/autoload.php';
-    }
 
     public function getLT()
     {
@@ -46,17 +40,8 @@ abstract class AbstractWorker extends \Thread implements WorkerInterface
         return $this->lifeTime;
     }
 
-    private function findParentPath($path)
+    public function getOutput()
     {
-        $dir = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-        return $dir . '/' . $path;
+        return $this->output;
     }
 }
