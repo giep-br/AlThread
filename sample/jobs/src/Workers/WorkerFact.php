@@ -15,12 +15,10 @@ class WorkerFact extends AbstractWorker
 	protected function exec()
 	{
 		usleep(rand(0, 50000));
-    echo "Factorial of {$this->line} = ";
-		echo self::fact($this->line)."\n";
+        return array($this->line, self::fact($this->line));
 	}
 
 	public static function onFinishLoop(Context $context){
-     echo "\nEND.\n";
 	}
 
 	private static function fact($x)
