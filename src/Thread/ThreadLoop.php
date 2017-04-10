@@ -70,6 +70,6 @@ class ThreadLoop
         $this->pool->join();
 
         $worker_class = $this->worker_class;
-        $worker_class::onFinishLoop($this->context);
+        $worker_class::onFinishLoop($this->context, $this->pool->getThreadsOutput());
     }
 }
