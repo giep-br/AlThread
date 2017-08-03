@@ -80,13 +80,13 @@ Add to your composer.json:
 
 {
   "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/giep-br/AlThread.git"
-        }
+      {
+          "type": "git",
+          "url": "git@github.com:giep-br/AlThread.git"
+      },
     ],
 "require": {
-    "giep-br/althread": ">=1.1"
+    "giep-br/althread": ">=1.3.0"
   }
 }
 ```
