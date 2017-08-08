@@ -33,4 +33,4 @@ jobs:
       - run: composer install
 
       # run tests!
-      - run: vendor/bin/codecept/codecept run
+      - run: vendor/bin/codecept run
