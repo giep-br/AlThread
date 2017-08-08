@@ -20,7 +20,7 @@ jobs:
           - v1-dependencies-{{ checksum "composer.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: ln -s /opt/altrhead/vendor/bin/codecept /usr/bin/
+      - run: ln -s ./vendor/bin/codecept /usr/bin/
       - run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
       - run: php composer-setup.php --install-dir=/usr/local/bin --filename=composer
       - run: php -r "unlink('composer-setup.php');"

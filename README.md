@@ -1,5 +1,8 @@
 =======
 # AlSmtp
+
+[![CircleCi](https://circleci.com/gh/giep-br/AlThread.svg?style=shield&circle-token=b99734cd251d82737b31ef78dfa1237fa6534941)](https://circleci.com/gh/giep-br/AlThread)
+
 A simple structure for creating Threaded jobs
 
 ## A Simple Example
