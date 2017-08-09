@@ -1,0 +1,36 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image:  php:5.6-zts
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      - run: php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+      - run: php -r "unlink('composer-setup.php');"
+      - run: apt-get update && apt-get install -y git zip unzip build-essential
+      - run: pecl install pthreads-2.0.10 && docker-php-ext-enable pthreads
+
+      - save_cache:
+          paths:
+            - vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+      - run: composer install
+
+      # run tests!
+      - run: vendor/bin/codecept run
