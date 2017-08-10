@@ -1,4 +1,5 @@
 <?php
+
 namespace ThreadTest;
 
 use AlThread\Exception\PoolException;
@@ -8,22 +9,7 @@ use AlThread\Thread\AbstractWorker;
 use Codeception\TestCase\Test;
 use Codeception\Util\Stub;
 
-class ConcretWorker extends AbstractWorker
-{
-    public static function onFinishLoop(Context $context){
-        return null;
-    }
-
-    public static function setUpResource(Context $context)
-    {
-        return null;
-    }
-
-    protected function exec()
-    {
-
-    }
-}
+require_once __DIR__ . '/fixtures/ConcretWorker.php';
 
 class WorkerPoolTest extends Test
 {
@@ -104,7 +90,7 @@ class WorkerPoolTest extends Test
     private function stubIsRunningWorker()
     {
         return  Stub::construct(
-            "ThreadTest\\ConcretWorker",
+            "ConcretWorker",
             array(null, null, new Context()),
             array(
                 "start" => function () {},
@@ -116,7 +102,7 @@ class WorkerPoolTest extends Test
     private function stubConcreteWorker()
     {
         return  Stub::construct(
-            "ThreadTest\\ConcretWorker",
+            "ConcretWorker",
             array(null, null, new Context()),
             array(
                 "start" => function () {}

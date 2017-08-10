@@ -8,11 +8,17 @@ use \AlThread\Exception\ResourceException;
 */
 class ResourceControl implements \Iterator, \Countable
 {
-    private $p;
+    private $p = 0;
+
+    const LOAD_MUST_BE_ARRAY = 'The return of setUpResource must be a numerical array.';
+    const OUT_OF_RANGE = 'Resource pointer out of range';
 
     public function __construct($load)
     {
-        $this->p = 0;
+
+      if( !(is_array($load) and isset($load)))
+        throw new ResourceException(self::LOAD_MUST_BE_ARRAY);
+
         $this->load = $load;
     }
 
@@ -28,8 +34,9 @@ class ResourceControl implements \Iterator, \Countable
 
     public function next()
     {
-        if (!$this->valid()) {
-            throw new ResourceException("Resource pointer out of range");
+        if (!$this->valid())
+        {
+            throw new ResourceException(self::OUT_OF_RANGE);
         }
 
         $out = $this->current();
@@ -51,4 +58,5 @@ class ResourceControl implements \Iterator, \Countable
     {
         return !($this->p >= $this->count());
     }
+
 }

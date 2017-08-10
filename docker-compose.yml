@@ -1,6 +1,7 @@
 version: '2'
 services:
-  cli:
+  altrhead:
+    container_name: altrhead
     build: .
     volumes:
-     - .:/code
+     - .:/opt/altrhead

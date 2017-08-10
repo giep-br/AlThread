@@ -99,4 +99,22 @@ class ResourceControlTest extends Test
         $resource = new ResourceControl($this->load);
         $this->assertEquals(5, count($resource));
     }
+
+    public function testWrongLoad(){
+
+      $message = 'ok';
+
+      try {
+
+        $resource = new ResourceControl(123);
+
+      }catch( ResourceException $e ){
+
+        $message = $e->getMessage();
+
+      }
+
+      $this->assertEquals($message, ResourceControl::LOAD_MUST_BE_ARRAY);
+
+    }
 }

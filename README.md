@@ -1,5 +1,8 @@
 =======
 # AlSmtp
+
+[![CircleCi](https://circleci.com/gh/giep-br/AlThread.svg?style=shield&circle-token=b3a2fbdc90581396fdba62d3077659b139cafb02)](https://circleci.com/gh/giep-br/AlThread)
+
 A simple structure for creating Threaded jobs
 
 ## A Simple Example
@@ -80,13 +83,13 @@ Add to your composer.json:
 
 {
   "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/giep-br/AlThread.git"
-        }
+      {
+          "type": "git",
+          "url": "git@github.com:giep-br/AlThread.git"
+      },
     ],
 "require": {
-    "giep-br/althread": ">=1.1"
+    "giep-br/althread": ">=1.3.0"
   }
 }
 ```

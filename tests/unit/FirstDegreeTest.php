@@ -17,7 +17,8 @@ class FirstDegreeTest extends Test
     protected function _before()
     {
         $this->max_threads = 30;
-        $this->firstDegree = new FirstDegree($this->max_threads);
+        $this->min_threads = 10;
+        $this->firstDegree = new FirstDegree($this->max_threads, $this->min_threads);
     }
 
     protected function _after()
@@ -45,10 +46,10 @@ class FirstDegreeTest extends Test
         $this->firstDegree->setSensor($mockSensor);
 
         $this->assertEquals(30, $this->firstDegree->measure());
-        $this->assertEquals(0, $this->firstDegree->measure());
+        $this->assertEquals($this->min_threads, $this->firstDegree->measure());
 
         #a number greater than 1
-        $this->assertEquals(0, $this->firstDegree->measure());
+        $this->assertEquals($this->min_threads, $this->firstDegree->measure());
 
         #Testing a negative number raise Exception
         try {
@@ -73,7 +74,7 @@ class FirstDegreeTest extends Test
     public function testSetSensor()
     {
         #Testing if it throw a Exception when it's without a sensor
-        $firstDegree = new FirstDegree($this->max_threads);
+        $firstDegree = new FirstDegree($this->max_threads, $this->min_threads);
 
         try {
             $firstDegree->measure();
