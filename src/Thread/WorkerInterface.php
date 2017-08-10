@@ -12,7 +12,7 @@ interface WorkerInterface
      */
     public static function setUpResource(Context $context);
 
-    /**
+  /**
      *
      * @param $context AlThread\Thread\Context
      * @param $thread_return
