@@ -17,7 +17,7 @@ class FirstDegree extends AbstractLoadMeasurer
 
     private function foundAngular()
     {
-        return self::B/$this->root;
+        return self::B/$this->max;
     }
 
     protected function calculate($y)

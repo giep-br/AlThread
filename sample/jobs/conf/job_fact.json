@@ -1,6 +1,0 @@
-{
-	"job_name" : "job_fact",
-	"worker_class" : "WorkerFact",
-	"measurer_type" : "first_degree",
-	"max_threads" : 10
-}

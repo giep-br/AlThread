@@ -1,44 +1,27 @@
 <?php
 namespace AlThread\Thread;
 
-use AlThread\Config\ConfigControl;
 use AlThread\Exception\ThreadException;
 use AlThread\LoadControl\LoadControlMapper;
 use AlThread\Debug\JobDebug;
+use \AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
 
-class Job implements \SplObserver
+class Job
 {
-    private $config_file;
-    private $config;
-    private $thread_loop;
     private $is_setup = false;
-    private $worker_class;
-    private $sensor;
-    private $measurer;
-    private $pool;
-    private $resource_controll;
-    private $context;
+    private $thread_loop;
     private $job_id;
-    private $max_threads;
-    private $min_threads;
     private $start_time;
 
-
-    public function __construct($config_file, $workers_folder)
+    public function __construct(
+        ThreadLoop $loop,
+        $job_id = null
+    )
     {
-        if (!is_dir($workers_folder)) {
-            throw new ThreadException(
-                "Invalid worker folder: ".$workers_folder
-            );
-        }
-
-        $this->workers_folder = rtrim($workers_folder, "/");
-        $this->config_file = $config_file;
-        $file = new \SplFileObject($this->config_file);
-        $this->config = new ConfigControl($file);
-        $this->context = null;
+        $this->job_id = $job_id;
         $this->is_setup = false;
-        $this->start_time = time();
+        $this->start_time = microtime(true);
+        $this->thread_loop = $loop;
     }
 
     public function startJob()
@@ -48,58 +31,7 @@ class Job implements \SplObserver
                 "Job not configured, call the method Job::setup()"
             );
         }
-
-        $this->thread_loop->mainLoop();
-    }
-
-    protected function loadWorkerClass($fqcn)
-    {
-        $className = explode('\\', $fqcn);
-        $file = $this->workers_folder . '/src/Workers/'
-            . $className[count($className) - 1].".php";
-
-        if (!is_file($file)) {
-            throw new ThreadException(
-                "Worker file not exists: ".$file
-            );
-        }
-
-        require_once($file);
-
-        if (!class_exists($fqcn)) {
-            throw new ThreadException(
-                "Worker class is not defined: \"".$fqcn."\""
-            );
-        }
-    }
-
-    public function update(\SplSubject $subject)
-    {
-        $this->config = $subject;
-    }
-
-    private function updateConfig()
-    {
-        $this->max_threads = $this->config->max_threads;
-        if (!$this->max_threads) {
-            $this->max_threads = 10;
-        }
-
-        $this->measurer->setRoot($this->max_threads);
-    }
-
-    private function returnContext()
-    {
-        if ($this->context === null) {
-            return new Context();
-        }
-
-        return $this->context;
-    }
-
-    public function setContext(Context $context)
-    {
-        $this->context = $context;
+        return $this->thread_loop->mainLoop();
     }
 
     public function getJobId()
@@ -117,87 +49,112 @@ class Job implements \SplObserver
         return $this->start_time;
     }
 
-    public function generateJobId()
-    {
-        if ($this->config->job_id) {
-            return $this->config->job_id;
-        }
-
-        return md5( (string)time().(string)rand(0, 2000) );
-    }
-
-    public function getJobOutput()
-    {
-        return $this->pool->getThreadsOutput();
-    }
-
     public function setup()
     {
-        $this->worker_class = $this->config->worker_class;
-        $this->loadWorkerClass($this->worker_class);
-
-        $sensor_type = $this->config->sensor_type;
-        $measurer_type = $this->config->measurer_type;
-
-        if (!$this->config->max_threads) {
-            $this->config->max_threads = 10;
-        }
-
-        if (!$this->config->min_threads) {
-            $this->config->min_threads = 5;
-        }
-
-        if (!$sensor_type) {
-            $sensor_type = "load_avg";
-        }
-
-        if (!$measurer_type) {
-            $measurer_type = "first_degree";
-        }
-
-        $this->config->min_threads = $this->min_threads;
         $this->job_id = (bool)$this->job_id ? $this->job_id : $this->generateJobId();
-        $this->sensor = LoadControlMapper::makeSensor($sensor_type);
-        $this->measurer = LoadControlMapper::makeMeasurer(
-                                                $measurer_type,
-                                                $this->config->max_threads,
-                                                $this->config->min_threads
-                                            );
-
-        $this->measurer->setSensor($this->sensor);
-
-        $this->pool = new WorkerPool($this->measurer->measure());
-        $worker_class = $this->worker_class;
-        $resources = $worker_class::setUpResource($this->returnContext());
-        $this->resource_controll = new ResourceControl($resources);
-        $this->createThreadLoop();
-
         $this->is_setup = true;
     }
 
-    private function createJobDebug()
+    private function generateJobId()
     {
-            $file = new \SplFileObject("/tmp/".$this->job_id, "w");
-            $jd = new JobDebug(
-                $file,
-                $this->pool,
-                $this,
-                $this->measurer,
-                $this->config
-            );
-            return $jd;
+        if ($this->job_id) {
+            return $this->job_id;
+        }
+        return md5( (string)time().(string)rand(0, 2000) );
     }
 
-    private function createThreadLoop()
+    private static function createJobDebug(
+        $job_id,
+        WorkerPool $pool,
+        AbstractLoadMeasurer $measurer,
+        $debug_folder
+    ){
+        if(!is_dir($debug_folder)) {
+            throw new \AlThread\Exception\ConfigException("Invalid config value debug_folder: {$debug_folder}");
+        }
+
+        $debug_folder = rtrim($debug_folder, "/ ");
+
+        $file = new \SplFileObject("$debug_folder/$job_id.dbg", "w");
+        $jd = new JobDebug(
+            $file,
+            $pool,
+            $measurer,
+            $job_id
+        );
+        return $jd;
+    }
+
+    public static function make(
+        $worker_class,
+        Context $context,
+        $sensor_type = "load_aveg",
+        $measurer_type = "first_degree",
+        $max_threads = 5,
+        $min_threads = 1,
+        $debug_folder = "/tmp/debug",
+        $job_id = null
+    )
     {
-        $this->thread_loop = new ThreadLoop(
-            $this->worker_class,
-            $this->measurer,
-            $this->pool,
-            $this->resource_controll,
-            $this->config,
-            $this->returnContext(),
-            $this->createJobDebug()
+        $sensor = \AlThread\LoadControl\LoadControlMapper::makeSensor($sensor_type);
+
+        $measurer = \AlThread\LoadControl\LoadControlMapper::makeMeasurer(
+            $measurer_type,
+            $max_threads,
+            $min_threads
+        );
+        $measurer->setSensor($sensor);
+
+        $pool = new WorkerPool($measurer->measure());
+
+        $resources = $worker_class::setUpResource($context);
+        $resource_controll = new ResourceControl($resources);
+
+        $thread_loop = new ThreadLoop(
+            $worker_class,
+            $measurer,
+            $pool,
+            $resource_controll,
+            $context
+        );
+
+        $job_debug = self::createJobDebug(
+            $job_id,
+            $pool,
+            $measurer,
+            $debug_folder
+        );
+
+        $thread_loop->setDebuger($job_debug);
+        $thread_loop->showDebuger(true);
+
+        $job = new static(
+            $thread_loop
+        );
+        $job_debug->setJob($job);
+        $job->setJobId($job_id);
+        $job->setup();
+
+        return $job;
+    }
+
+    public static function makeFromConf(
+        $config_path,
+        $worker_class,
+        Context $context,
+        $job_id = null
+    )
+    {
+        $config = \AlThread\Config\ConfigDefaults::make($config_path);
+        return self::make(
+            $worker_class,
+            $context,
+            $config['sensor_type'],
+            $config['measurer_type'],
+            $config['max_threads'],
+            $config['min_threads'],
+            $config['debug_folder'],
+            $job_id
         );
     }
 }

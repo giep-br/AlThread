@@ -8,19 +8,14 @@
             "email": "georgio.barbosa@gmail.com"
         }
     ],
-    "repositories": [
-          {
-              "type": "vcs",
-              "url": "https://github.com/giep-br/AlThread.git"
-          }
-    ],
     "require": {
         "php": ">=5.4.0",
-        "giep-br/althread": "dev-master@dev"
+        "gfonseca/tunny": "^1.4"
     },
     "autoload": {
         "psr-4": {
-            "AlThread\\": "../src"
+            "Fact\\": "./src/",
+            "AlThread\\": "../src/"
         }
     }
 }
