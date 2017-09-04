@@ -15,20 +15,24 @@ class JobDebug
     public function __construct(
         \SplFileObject $file,
         \AlThread\Thread\WorkerPool $pool,
-        \AlThread\Thread\Job $job,
         \AlThread\LoadControl\Measurer\LoadMeasurerInterface $measurer,
-        \AlThread\Config\ConfigControl $config,
         $id = ""
     ) {
         if(!$file->isWritable()) {
             throw new IOError("Debug File ".$file->getPathname()." is not a valid file."    );
         }
+
         $this->file = $file;
         $this->pool = $pool;
         $this->measurer = $measurer;
-        $this->job = $job;
-        $this->config = $config;
         $this->id = $id;
+
+        chmod($this->file->getPathname(), "774");
+    }
+
+    public function setJob(\AlThread\Thread\Job $job)
+    {
+        $this->job = $job;
     }
 
     public function getRunning()
@@ -53,12 +57,12 @@ class JobDebug
 
     public function getMax()
     {
-        return $this->config->max_threads;
+        return $this->measurer->getMax();
     }
 
     public function getMin()
     {
-        return $this->config->min_threads;
+        return $this->measurer->getMin();
     }
 
     public function getID()

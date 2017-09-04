@@ -7,25 +7,41 @@ use AlThread\LoadControl\Sensor;
 
 abstract class AbstractLoadMeasurer implements LoadMeasurerInterface
 {
-    protected $root;
+    protected $max;
     protected $min;
     private $sensor;
     const B = 1;
 
-    public function __construct($root, $min = null)
+    public function __construct($max, $min)
     {
-        $this->root = $root;
-        $this->min = $min;
+        $this->setMax($max);
+        $this->setMin($min);
     }
 
-    final public function setRoot($root)
+    final public function getMin() {
+        return $this->min;
+    }
+
+    final public function getMax() {
+        return $this->max;
+    }
+
+    final public function setMax($max)
     {
-        $this->root = $root;
+        if(!is_numeric($max)) {
+            throw new MeasurerException("LoadMeassurer \$max must be an integer");
+        }
+
+        $this->max = (int)$max;
     }
 
     final public function setMin($min)
     {
-        $this->min = $min;
+        if(!is_numeric($min)) {
+            throw new MeasurerException("LoadMeassurer \$min must be an integer");
+        }
+
+        $this->min = (int)$min;
     }
 
     final public function setSensor(Sensor\AbstractLoadSensor $sensor)
@@ -47,7 +63,7 @@ abstract class AbstractLoadMeasurer implements LoadMeasurerInterface
 
         $threads_to_run = (int)$this->calculate($y);
 
-        if ($this->min and $threads_to_run < $this->min) {
+        if ($threads_to_run < $this->min) {
             return $this->min;
         }
 
