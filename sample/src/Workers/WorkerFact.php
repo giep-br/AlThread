@@ -1,5 +1,5 @@
-
 <?php
+namespace Fact\Workers;
 
 use AlThread\Thread\AbstractWorker;
 use AlThread\Thread\Context;
@@ -14,11 +14,16 @@ class WorkerFact extends AbstractWorker
 
 	protected function exec()
 	{
-		usleep(rand(0, 50000));
+		usleep(rand(0, 500000));
         return array($this->line, self::fact($this->line));
 	}
 
-	public static function onFinishLoop(Context $context){
+	public static function onFinishLoop(
+        Context $context,
+        $thread_return
+    )
+    {
+        print_r($thread_return);
 	}
 
 	private static function fact($x)

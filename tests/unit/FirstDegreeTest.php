@@ -40,28 +40,30 @@ class FirstDegreeTest extends Test
         $mockSensor = Stub::constructEmpty(
             '\AlThread\LoadControl\Sensor\LoadAVG',
             array("file" => "/proc/loadavg"),
-            array('getSystemLoad' => Stub::consecutive(0, 1, 1.1, -1, null))
+            array('getSystemLoad' => Stub::consecutive(0, 1, 2, -1, null, 0))
         );
 
         $this->firstDegree->setSensor($mockSensor);
 
-        $this->assertEquals(30, $this->firstDegree->measure());
+        #Assert that a load 0 result in max_threads
+        $this->assertEquals($this->max_threads, $this->firstDegree->measure());
+
+        #Assert that a Load 1 result in min_threads
         $this->assertEquals($this->min_threads, $this->firstDegree->measure());
 
-        #a number greater than 1
+        #A that a load greater than 1 result in min threads
         $this->assertEquals($this->min_threads, $this->firstDegree->measure());
 
-        #Testing a negative number raise Exception
+        #Assert that a negative load result in raise Exception
         try {
             $this->firstDegree->measure();
         } catch (MeasurerException $e) {
-            $wrong_negative_number = false;
             $wrong_negative_number = true;
         }
 
         $this->assertTrue($wrong_negative_number);
 
-        #Testing a null var
+        #Assert that null value load will result in exception
         try {
             $this->firstDegree->measure();
             $wrong_null_number = false;
@@ -69,6 +71,30 @@ class FirstDegreeTest extends Test
             $wrong_null_number = true;
         }
         $this->assertTrue($wrong_null_number);
+    }
+
+    public function testSetMax()
+    {
+        #Testing a null var
+        try {
+            $this->firstDegree->setMax(null);
+            $wrong_max = false;
+        } catch (MeasurerException $e) {
+            $wrong_max = true;
+        }
+        $this->assertTrue($wrong_max);
+    }
+
+    public function testSetMin()
+    {
+        #Testing a null var
+        try {
+            $this->firstDegree->setMin(null);
+            $wrong_min = false;
+        } catch (MeasurerException $e) {
+            $wrong_min = true;
+        }
+        $this->assertTrue($wrong_min);
     }
 
     public function testSetSensor()

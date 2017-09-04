@@ -2,7 +2,6 @@
 namespace AlThread\Thread;
 
 use \AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
-use \AlThread\Config\ConfigControl;
 use \AlThread\Debug\JobDebug;
 
 class ThreadLoop
@@ -19,18 +18,14 @@ class ThreadLoop
         AbstractLoadMeasurer $measurer,
         WorkerPool $pool,
         ResourceControl $resource,
-        ConfigControl $config,
-        Context $context,
-        JobDebug $debug
+        Context $context
     ) {
         $this->worker_class = $worker_class;
         $this->measurer = $measurer;
         $this->pool = $pool;
         $this->resource = $resource;
-        $this->config = $config;
         $this->context = $context;
         $this->debuger = false;
-        $this->job_debug = $debug;
     }
 
     private function output($text)
@@ -48,7 +43,12 @@ class ThreadLoop
         }
     }
 
-    public function setDebuger($on)
+    public function setDebuger(JobDebug $debug)
+    {
+        $this->job_debug = $debug;
+    }
+
+    public function showDebuger($on)
     {
         $this->debuger = $on;
     }
@@ -61,15 +61,17 @@ class ThreadLoop
                 $k = $this->resource->key();
                 $this->pool->submit(new $this->worker_class($k, $item, $this->context));
             }
-
-            $this->config->checkForFileChange();
             $this->pool->setMax($this->measurer->measure());
             $this->pool->collectGarbage();
-            $this->job_debug->update();
+            if($this->debuger) {
+                $this->job_debug->update();
+            }
         }
         $this->pool->join();
 
         $worker_class = $this->worker_class;
         $worker_class::onFinishLoop($this->context, $this->pool->getThreadsOutput());
+        $this->job_debug->close();
+        return $this->pool->getThreadsOutput();
     }
 }
