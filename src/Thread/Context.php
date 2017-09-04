@@ -14,7 +14,7 @@ class Context
             if ($k % 2 == 0) {
                 $cont_key = $v;
             } else {
-                $this->addItem($v, $cont_key);
+                $this->addItem($cont_key, $v);
                 $cont_key = null;
             }
         }
