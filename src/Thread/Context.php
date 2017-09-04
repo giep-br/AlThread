@@ -14,7 +14,7 @@ class Context
             if ($k % 2 == 0) {
                 $cont_key = $v;
             } else {
-                $this->addItem($v, $cont_key);
+                $this->addItem($cont_key, $v);
                 $cont_key = null;
             }
         }
@@ -29,7 +29,7 @@ class Context
         unset($this->vars[$key]);
     }
 
-    public function addItem($obj, $key = null)
+    public function addItem($key = null, $obj)
     {
         if ($key == null) {
             $this->vars[] = $obj;
