@@ -1,4 +1,5 @@
 # AlThread
+![althread](https://raw.githubusercontent.com/gfonseca/althread/master/althread.png "althread")
 
 [![CircleCi](https://circleci.com/gh/giep-br/AlThread.svg?style=shield&circle-token=b3a2fbdc90581396fdba62d3077659b139cafb02)](https://circleci.com/gh/giep-br/AlThread)
 
