@@ -33,4 +33,4 @@ jobs:
       - run: composer install
 
       # run tests!
-      - run: vendor/bin/codecept run
+      - run: cat .circleci/thread.ascii && vendor/bin/codecept run
