@@ -1,8 +1,0 @@
-{
-    "job_name" : "job_fact",
-    "measurer_type" : "maximizer",
-    "sensor_type" : "load_avg",
-    "debug_folder" : "/tmp/debug/",
-    "min_threads" : 1,
-    "max_threads" : 12
-}

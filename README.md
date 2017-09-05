@@ -7,19 +7,15 @@
 ### A simple structure for creating Threaded jobs
 ---
 
-
 ## Installation
 
 Add to your composer.json:
 ```json
-
 {
-  "repositories": [
-      {
-          "type": "git",
-          "url": "git@github.com:giep-br/AlThread.git"
-      },
-    ],
+"repositories": [{
+        "type": "git",
+        "url": "git@github.com:giep-br/AlThread.git"
+    }],
 "require": {
     "giep-br/althread": "~2"
   }
@@ -40,7 +36,7 @@ use Fact\Workers\WorkerFact;
 
 //Passing an external value to the thread context
 $context = new Context();
-context->addItem("max", 300);
+$context->addItem("max", 300);
 
 $j = Job::make(
     //$worker_class| the logic of threads
@@ -48,7 +44,7 @@ $j = Job::make(
     //$context| An object container
     $context,
     //$sensor| The metric of machine load
-    "load_aveg",
+    "load_avg",
     //$measurer| The threads measurer
     "first_degree",
     //$max_threads| Max Threads
@@ -59,10 +55,11 @@ $j = Job::make(
     "/tmp/debug",
     //$job_id| Job ID
     "WorkerFact_job"
-)
+);
 
 $output = $j->startJob();
-print_r($output);
+$t = microtime(true) - $j->getStartTime();
+echo "# ". count($output)." factorials calculated, in $t seconds.";
 ```
 ### Worker
 **./workers/WorkerFact.php**
@@ -83,7 +80,9 @@ class WorkerFact extends AbstractWorker
         * the threads, and it must return an array;
         */
 
+        // The "max" attribute was defined in factorial.php
         $calculate_until = $context->getItem("max");
+
         // Create the array of numbers
         return range(1, $calculate_until);
     }
@@ -154,25 +153,24 @@ Array
         )
 )
 ```
-
 ### Configure by file
 
-*./conf/job_fact.json*
+*fact_conf.json*
 ```json
 {  
-"job_name" : "job_fact",
-"worker_class" : "WorkerFact",
-"measurer_type" : "first_degree",  
-"max_threads" : 10,
-"debug_folder" : "/tmp/debug/",
-"min_threads" : 5
+    "job_name": "job_fact",
+    "measurer_type": "first_degree",  
+    "sensor_type": "load_avg",  
+    "debug_folder": "/tmp/debug/",
+    "max_threads": 10,
+    "min_threads": 5
 }
 ```
 *factorial.php*
 ```php
 $j = Job::makeFromConf(
-    // You can use .json .yml .ini and .php  as 0array
-    __DIR__."/../conf/job_fact.json",
+    // You can use .json .yml .ini and .php with array
+    __DIR__."/../conf/fact_conf.json",
     WorkerFact::class,
     $context,
     "WorkerFact_job"
