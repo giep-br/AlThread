@@ -56,13 +56,15 @@ class ThreadLoop
     public function mainLoop()
     {
         while ($this->resource->valid()) {
-            if (!$this->pool->isFull() && $this->resource->valid()) {
-                $item = $this->resource->next();
-                $k = $this->resource->key();
-                $this->pool->submit(new $this->worker_class($k, $item, $this->context));
+            $this->pool->collectGarbage();
+            while (!$this->pool->isFull() && $this->resource->valid()) {
+                $this->pool->submit(new $this->worker_class(
+                    $this->resource->key(),
+                    $this->resource->next(),
+                    $this->context
+                ));
             }
             $this->pool->setMax($this->measurer->measure());
-            $this->pool->collectGarbage();
             if($this->debuger) {
                 $this->job_debug->update();
             }
