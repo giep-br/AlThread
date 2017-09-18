@@ -43,9 +43,9 @@ class WorkerFactA extends AbstractWorker
         /** It will be called when the process done all the load **/
 
         // You can obtain the return of the processing in $thread_return
-        $data = [$thread_return, 'A'];
-        print_r($data);
-        return $data;
+
+        print_r([$thread_return, 'A']);
+        return 'A';
     }
 
     private static function fact($x)

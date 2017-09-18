@@ -1,0 +1,8 @@
+{
+    "job_name": "old-b",
+    "measurer_type": "first_degree",
+    "sensor_type": "load_avg",
+    "debug_folder": "/tmp/debug/",
+    "max_threads": 10,
+    "min_threads": 5
+}

@@ -25,7 +25,7 @@ class FirstDegreeTest extends Test
     {
     }
 
-    public function testCreate2Files()
+    public function testCreate2JobsWithNewMethod()
     {
 
       $cA = new Context();
@@ -81,11 +81,54 @@ class FirstDegreeTest extends Test
       );
 
       $rB = $jB->startJob();
-      exit(); // Just to give an echo on what was printed;
+
+      $this->assertSame($rA,'A');
+      $this->assertSame($rB,'B');
+
+    }
+
+    public function testCreate2JobsWithOldMethod()
+    {
+
+      $cA = new Context();
+      $cA->addBulk("id_login_trans", 'a1');
+      $cA->addBulk("id_login", 'a2');
+      $cA->addBulk("filter", 'a3');
+      $cA->addItem("max", 300);
+
+      $jA = Job::makeFromConf(
+          __DIR__ . "/fixtures/conf-a.json",
+          //$worker_class| the logic of threads
+          WorkerFactA::class,
+          //$context| An object container
+          $cA,
+          "WorkerFactAOld_job"
+      );
+
+      $rA = $jA->startJob();
+
+      $cB = new Context();
+      $cB->addBulk("id_login_trans", 'a1');
+      $cB->addBulk("id_login", 'a2');
+      $cB->addBulk("filter", 'a3');
+      $cB->addItem("max", 300);
+
+      $jB = Job::makeFromConf(
+          __DIR__ . "/fixtures/conf-b.json",
+          //$worker_class| the logic of threads
+          WorkerFactB::class,
+          //$context| An object container
+          $cB,
+          "WorkerFactBOld_job"
+      );
+
+      $rB = $jB->startJob();
+
       $this->assertHasKey($rA,'A');
       $this->assertHasKey($rB,'B');
 
 
     }
+
 
 }
