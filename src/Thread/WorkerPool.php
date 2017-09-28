@@ -13,6 +13,8 @@ class WorkerPool
     private $terminated;
     private $ALT;
     private $threads_output;
+    private $job_exceptions;
+    private $has_exceptions;
 
     public function __construct($max)
     {
@@ -21,6 +23,8 @@ class WorkerPool
         $this->terminated = 0;
         $this->ALT = array();
         $this->threads_output = array();
+        $this->job_exceptions = array();
+        $this->has_exceptions = false;
 
     }
 
@@ -55,6 +59,11 @@ class WorkerPool
         return $sum / $tot;
     }
 
+    public function hasExceptions()
+    {
+        return $this->has_exceptions;
+    }
+
     public function submit(AbstractWorker $wk)
     {
         if (!$this->isFull()) {
@@ -86,6 +95,11 @@ class WorkerPool
         return $total;
     }
 
+    public function getThreadsExceptions()
+    {
+        return $this->job_exceptions;
+    }
+
     public function getThreadsOutput()
     {
         return $this->threads_output;
@@ -98,6 +112,10 @@ class WorkerPool
                 $this->terminated++;
                 $this->ALT[] = $t->getLT();
                 $this->threads_output[] = $t->getOutput();
+                if($t->getException()) {
+                    $this->has_exceptions = true;
+                    $this->job_exceptions[] = $t->getException();
+                }
                 unset($this->pool[$k]);
             }
         }

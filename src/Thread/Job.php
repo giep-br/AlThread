@@ -4,7 +4,9 @@ namespace AlThread\Thread;
 use AlThread\Exception\ThreadException;
 use AlThread\LoadControl\LoadControlMapper;
 use AlThread\Debug\JobDebug;
-use \AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
+use AlThread\LoadControl\Measurer\AbstractLoadMeasurer;
+use AlThread\Thread\Command\CommandServer;
+use AlThread\Thread\SystemFacade;
 
 class Job
 {
@@ -106,16 +108,18 @@ class Job
         $measurer->setSensor($sensor);
 
         $pool = new WorkerPool($measurer->measure());
-
+        $system_facade = new SystemFacade;
         $resources = $worker_class::setUpResource($context);
         $resource_controll = new ResourceControl($resources);
+        $command_server  = new CommandServer($system_facade);
 
         $thread_loop = new ThreadLoop(
             $worker_class,
             $measurer,
             $pool,
             $resource_controll,
-            $context
+            $context,
+            $command_server
         );
 
         $job_debug = self::createJobDebug(
@@ -124,6 +128,10 @@ class Job
             $measurer,
             $debug_folder
         );
+
+        $system_facade->setThreadLoop($thread_loop);
+        $system_facade->setWorkerPool($pool);
+        $system_facade->setResourceControl($resource_controll);
 
         $thread_loop->setDebuger($job_debug);
         $thread_loop->showDebuger(true);
@@ -134,7 +142,7 @@ class Job
         $job_debug->setJob($job);
         $job->setJobId($job_id);
         $job->setup();
-
+        $system_facade->setJob($job);
         return $job;
     }
 

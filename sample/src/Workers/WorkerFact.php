@@ -23,11 +23,17 @@ class WorkerFact extends AbstractWorker
 
     protected function exec()
     {
+        include(__DIR__."/../../vendor/autoload.php");
+        ini_set("display_errors", "On");
+        error_reporting(E_ALL);
         /** This is the thread context, this method runs paralleling **/
 
         //Let's add some time of processing
         usleep(rand(0, 500000));
-
+        echo "{$this->k }\n";
+        if($this->k == 10){
+            throw new \AlThread\Thread\JobException\StopJob();
+        }
         /*
         * The atribute $this->line contains some item from the
         * array returned by SetUpResource to be processed,
