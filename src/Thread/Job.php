@@ -94,7 +94,7 @@ class Job
         $measurer_type = "first_degree",
         $max_threads = 5,
         $min_threads = 1,
-        $debug_folder = "/tmp/debug",
+        $debug_folder = null,
         $job_id = null
     )
     {
@@ -122,24 +122,27 @@ class Job
             $command_server
         );
 
-        $job_debug = self::createJobDebug(
-            $job_id,
-            $pool,
-            $measurer,
-            $debug_folder
-        );
-
         $system_facade->setThreadLoop($thread_loop);
         $system_facade->setWorkerPool($pool);
         $system_facade->setResourceControl($resource_controll);
-
-        $thread_loop->setDebuger($job_debug);
-        $thread_loop->showDebuger(true);
-
         $job = new static(
             $thread_loop
         );
-        $job_debug->setJob($job);
+        if($debug_folder) {
+            $job_debug = self::createJobDebug(
+                $job_id,
+                $pool,
+                $measurer,
+                $debug_folder
+            );
+
+            $thread_loop->setDebuger($job_debug);
+            $thread_loop->showDebuger(true);
+            $job_debug->setJob($job);
+        }
+
+        
+        
         $job->setJobId($job_id);
         $job->setup();
         $system_facade->setJob($job);
@@ -154,6 +157,7 @@ class Job
     )
     {
         $config = \AlThread\Config\ConfigDefaults::make($config_path);
+        var_dump($config['debug_folder']);
         return self::make(
             $worker_class,
             $context,

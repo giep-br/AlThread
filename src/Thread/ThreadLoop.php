@@ -96,8 +96,9 @@ class ThreadLoop
             $this->context,
             $this->pool->getThreadsOutput()
         );
-
-        $this->job_debug->close();
+        if($this->debuger) {
+            $this->job_debug->close();
+        }
         return $this->pool->getThreadsOutput();
     }
 }
