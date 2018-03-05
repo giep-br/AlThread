@@ -27,7 +27,7 @@ class JobDebug
         $this->measurer = $measurer;
         $this->id = $id;
 
-        chmod($this->file->getPathname(), "774");
+        chmod($this->file->getPathname(), "755");
     }
 
     public function setJob(\AlThread\Thread\Job $job)
