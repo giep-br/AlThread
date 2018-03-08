@@ -26,3 +26,5 @@ $j = JobMock::make(
     __DIR__ . "/fixtures",
     "job_mock"
 );
+
+$j->startJob();
