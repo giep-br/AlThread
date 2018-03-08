@@ -51,4 +51,4 @@ jobs:
           name: Run tests
           command: |
             cat .circleci/thread.ascii && vendor/bin/codecept run --coverage --coverage-html
-
+            mv ./tests/_output/coverage $CIRCLE_ARTIFACTS
