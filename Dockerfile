@@ -20,4 +20,7 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install pthreads-2.0.10 \
     && docker-php-ext-enable pthreads
 
+RUN pecl install xdebug-2.5.5 \
+    && docker-php-ext-enable xdebug
+
 CMD [ "tail", "-f", "/dev/null" ]
